@@ -29,5 +29,6 @@ Route::prefix('companies')->name('companies.')->group(function () {
     Route::get('/create', [\App\Http\Controllers\CompaniesController::class, 'create'])->name('create');
     Route::post('/', [\App\Http\Controllers\CompaniesController::class, 'store'])->name('store');
     Route::patch('/{company}', [\App\Http\Controllers\CompaniesController::class, 'update'])->name('update');
+    Route::delete('/{company}', [\App\Http\Controllers\CompaniesController::class, 'delete'])->name('delete');
 });
 require __DIR__.'/auth.php';

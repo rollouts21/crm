@@ -69,4 +69,10 @@ class CompaniesController extends Controller
         $company->refresh();
         return back()->with('success', 'Статус успешно обновлен!');
     }
+
+    public function delete(Company $company): RedirectResponse
+    {
+        $company->delete();
+        return back()->with('success', 'Удалено');
+    }
 }

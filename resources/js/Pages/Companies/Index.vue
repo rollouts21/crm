@@ -73,6 +73,9 @@ export default {
                     return 'bg-gray-700 text-white';
             }
         },
+        deleteCompany(id) {
+            this.$inertia.delete(`/companies/${id}`)
+        },
         initializeEditableData(companies) {
             const editable = {};
             const original = {};
@@ -253,7 +256,7 @@ export default {
                             </label>
                         </div>
 
-                        <footer class="mt-4 flex justify-end">
+                        <div class="mt-4 flex justify-end">
                             <button
                                 @click="saveChanges(company.id)"
                                 :disabled="!hasChanges(company.id) || savingStates[company.id]"
@@ -266,7 +269,8 @@ export default {
                             >
                                 {{ savingStates[company.id] ? 'Сохраняю...' : 'Сохранить' }}
                             </button>
-                        </footer>
+                            <p class="bg-danger px-4 py-2 rounded-lg ml-2 cursor-pointer " @click="deleteCompany(company.id)">Удалить</p>
+                        </div>
                     </template>
                 </article>
             </div>
