@@ -1,11 +1,13 @@
 <script setup>
 import { ref, computed } from 'vue';
+import {Link} from "@inertiajs/vue3";
 
 // --- Константы ширины в пикселях ---
 // Используются для точного расчета отступа (padding-left) для элемента <main>
 const CLOSED_WIDTH_PX = 60;
 const OPENED_WIDTH_PX = 240;
 // ------------------------------------
+
 
 // Состояние: открыта ли панель
 const isExpanded = ref(false);
@@ -59,27 +61,35 @@ const mainPaddingStyle = computed(() => {
 
             <nav id="sidebar-menu" class="flex-grow overflow-y-auto mt-2">
 
-                <a href="/" class="flex items-center p-3 mx-2 rounded hover:bg-bg-tertiary group">
-                    <i class="fa-solid fa-house w-6 h-6 flex-shrink-0 text-s-text group-hover:text-brand transition-colors"></i>
+                <Link href="/" class="flex items-center p-3 mx-2 rounded hover:bg-bg-tertiary group">
+<!--                    <i class="fa-solid fa-house w-6 h-6 flex-shrink-0 text-s-text group-hover:text-brand transition-colors"></i>-->
+                    <i
+                        class="fa-solid fa-house w-6 h-6 flex-shrink-0 transition-colors"
+                        :class="$page.url === '/' ? 'text-brand' : 'text-s-text group-hover:text-brand'"
+                    ></i>
                     <span v-show="isExpanded" class="ml-4 whitespace-nowrap text-p-text">Главная</span>
-                </a>
+                </Link>
 
-                <a href="/companies" class="flex items-center p-3 mx-2 rounded hover:bg-bg-tertiary group">
-                    <i class="fa-solid fa-database w-6 h-6 flex-shrink-0 text-s-text group-hover:text-brand transition-colors"></i>
+                <Link :href="route('companies.index')" class="flex items-center p-3 mx-2 rounded hover:bg-bg-tertiary group">
+<!--                    <i class="fa-solid fa-database w-6 h-6 flex-shrink-0 text-s-text group-hover:text-brand transition-colors"></i>-->
+                    <i
+                        class="fa-solid fa-database w-6 h-6 flex-shrink-0 transition-colors"
+                        :class="$page.url.startsWith('/companies') ? 'text-brand' : 'text-s-text group-hover:text-brand'"
+                    ></i>
                     <span v-show="isExpanded" class="ml-4 whitespace-nowrap text-p-text">Базы</span>
-                </a>
+                </Link>
 
-                <a href="/users" class="flex items-center p-3 mx-2 rounded hover:bg-bg-tertiary group">
+                <Link href="/users" class="flex items-center p-3 mx-2 rounded hover:bg-bg-tertiary group">
                     <i class="fa-solid fa-list-check w-6 h-6 flex-shrink-0 text-s-text group-hover:text-brand transition-colors"></i>
                     <span v-show="isExpanded" class="ml-4 whitespace-nowrap text-p-text">Задачи</span>
-                </a>
+                </Link>
             </nav>
 
             <div class="p-4 flex-shrink-0 border-t border-border-default">
-                <a href="/settings" class="flex items-center p-1 mx-1 rounded hover:bg-bg-tertiary group">
+                <Link href="/settings" class="flex items-center p-1 mx-1 rounded hover:bg-bg-tertiary group">
                     <i class="fa-regular fa-circle-user w-6 h-6 flex-shrink-0 text-s-text group-hover:text-brand transition-colors"></i>
                     <span v-show="isExpanded" class="ml-4 whitespace-nowrap text-p-text">Личный кабинет</span>
-                </a>
+                </Link>
             </div>
         </aside>
 

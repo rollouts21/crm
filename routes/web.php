@@ -31,4 +31,12 @@ Route::prefix('companies')->name('companies.')->group(function () {
     Route::patch('/{company}', [\App\Http\Controllers\CompaniesController::class, 'update'])->name('update');
     Route::delete('/{company}', [\App\Http\Controllers\CompaniesController::class, 'delete'])->name('delete');
 });
+
+Route::prefix('users')->name('users.')->group(function () {
+   Route::get('/', [\App\Http\Controllers\UsersController::class, 'index'])->name('index');
+   Route::get('/create', [\App\Http\Controllers\UsersController::class, 'create'])->name('create');
+   Route::post('/', [\App\Http\Controllers\UsersController::class, 'store'])->name('store');
+});
+
+Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('index');
 require __DIR__.'/auth.php';
