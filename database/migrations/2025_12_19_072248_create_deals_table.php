@@ -24,6 +24,7 @@ return new class extends Migration
             $table->dateTime('closed_at')->nullable();
             $table->string('lost_reason')->nullable();
             $table->string('comment');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
