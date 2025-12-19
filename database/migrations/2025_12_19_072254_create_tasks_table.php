@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('status')->default('open');
             $table->string('priority')->default('normal');
             $table->dateTime('completed_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
