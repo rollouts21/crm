@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class AccessesPolicy
 {
@@ -20,7 +18,7 @@ class AccessesPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $model->getRole == 1;
+        return $model->role_id == 1;
     }
 
     /**
