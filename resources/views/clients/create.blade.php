@@ -39,18 +39,19 @@
                     <label class="form-label text-muted-soft">Source</label>
                     <select class="form-select search-input" name="source_id">
                         @foreach ($sources as $source)
-                            <option value="{{ $source->id }}">{{ $source->name }}</option>
+                            <option class="text-black" value="{{ $source->id }}">{{ $source->name }}</option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label text-muted-soft">Status</label>
-                    <select class="form-select search-input" name="status">
-                        <option value="new">New</option>
-                        <option>Contacted</option>
-                        <option>Qualified</option>
-                        <option>VIP</option>
+                    <select class="form-select search-input" style="background-color: rgba(255, 255, 255, .06)"
+                        name="status">
+                        @foreach (App\Enums\ClientStatusEnum::cases() as $status)
+                            <option style="color: black" value="{{ $status->value }}">
+                                {{ $status->label() }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -63,7 +64,7 @@
                     <button class="btn btn-primary rounded-pill px-4">
                         Save Client
                     </button>
-                    <a href="/clients" class="btn btn-soft rounded-pill px-4">
+                    <a href="{{ route('clients.index') }}" class="btn btn-soft rounded-pill px-4">
                         Cancel
                     </a>
                 </div>

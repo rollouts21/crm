@@ -20,14 +20,15 @@ class ClientRequest extends FormRequest
      */
     public function rules(): array
     {
+        $isUpdate = $this->isMethod('patch') || $this->isMethod('put');
         return [
-            'name'      => 'required',
-            'email'     => 'required',
-            'phone'     => 'required',
-            'city'      => 'nullable',
-            'note'      => 'nullable',
-            'source_id' => 'required',
-            'status'    => 'required',
+            'name'      => [$isUpdate ? 'sometimes' : 'required'],
+            'email'     => [$isUpdate ? 'sometimes' : 'required'],
+            'phone'     => [$isUpdate ? 'sometimes' : 'required'],
+            'city'      => [$isUpdate ? 'sometimes' : 'nullable'],
+            'note'      => [$isUpdate ? 'sometimes' : 'nullable'],
+            'source_id' => [$isUpdate ? 'sometimes' : 'nullable'],
+            'status'    => [$isUpdate ? 'sometimes' : 'nullable'],
         ];
     }
 }

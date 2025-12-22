@@ -80,6 +80,7 @@
                                 <th>Source</th>
                                 <th>Deals</th>
                                 <th>Last contact</th>
+                                <th>Owner name</th>
                                 <th class="text-end">Actions</th>
                             </tr>
                         </thead>
@@ -97,18 +98,30 @@
                                         <div class="text-muted-soft small">{{ $client->email }}</div>
                                     </td>
                                     <td>
-                                        <span class="badge text-bg-success rounded-pill">Qualified</span>
+                                        <span
+                                            class="badge {{ $client->status->badgeClass() }} rounded-pill">{{ $client->status->label() }}</span>
                                     </td>
-                                    <td>{{ $client->source_id }} {{ $client->owner_id }}</td>
+                                    <td>{{ $client->source_id }}</td>
                                     <td>3</td>
-                                    <td class="text-nowrap">Today</td>
+                                    <td class="text-nowrap">
+                                        {{ $client->last_contact_at != null ? $client->last_contact_at->format('d.m.y, h:m') : 'Not contacted' }}
+                                    </td>
+                                    <td>{{ $client->getOwner() }}</td>
                                     <td class="text-end">
-                                        <a href="/clients/1" class="btn btn-sm btn-soft rounded-pill px-3">
-                                            View
-                                        </a>
-                                        <a href="/clients/1/edit" class="btn btn-sm btn-outline-light rounded-pill px-3">
-                                            Edit
-                                        </a>
+                                        <form action="{{ route('clients.destroy', $client->id) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <a href="{{ route('clients.show', $client->id) }}"
+                                                class="btn btn-sm btn-soft rounded-pill px-3">
+                                                View
+                                            </a>
+                                            <a href="{{ route('clients.edit', $client->id) }}"
+                                                class="btn btn-sm btn-outline-light rounded-pill px-3">
+                                                Edit
+                                            </a>
+                                            <button type="submit"
+                                                class="btn btn-sm btn-danger rounded-pill px-3">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

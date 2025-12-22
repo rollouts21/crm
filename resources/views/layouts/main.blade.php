@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
@@ -202,7 +202,7 @@
                                 type="search" placeholder="Search clients, deals..." />
                         </div>
 
-                        <a href="/clients/create" class="btn btn-primary btn-sm rounded-pill px-3">
+                        <a href="{{ route('clients.create') }}" class="btn btn-primary btn-sm rounded-pill px-3">
                             <i class="bi bi-plus-lg me-1"></i>New Client
                         </a>
 
