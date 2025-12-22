@@ -184,9 +184,11 @@
                         <li class="nav-item">
                             <a class="nav-link px-3" href="/tasks"><i class="bi bi-check2-square me-2"></i>Tasks</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3" href="/logs"><i class="bi bi-activity me-2"></i>Logs</a>
-                        </li>
+                        @can('view', auth()->user())
+                            <li class="nav-item">
+                                <a class="nav-link px-3" href="/logs"><i class="bi bi-activity me-2"></i>Logs</a>
+                            </li>
+                        @endcan
                     </ul>
 
                     <div class="d-flex align-items-center gap-2">
@@ -203,7 +205,7 @@
                         <div class="dropdown">
                             <button class="btn btn-soft btn-sm rounded-pill px-3 dropdown-toggle"
                                 data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle me-1"></i>Admin
+                                <i class="bi bi-person-circle me-1"></i>{{ auth()->user()->name }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow">
                                 <li><a class="dropdown-item" href="/profile"><i
@@ -211,14 +213,59 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item text-danger" href="/logout"><i
-                                            class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="post">
+                                        @csrf
+                                        <button class="dropdown-item text-danger"><i
+                                                class="bi bi-box-arrow-right me-2"></i>Logout</button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </nav>
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navOffcanvas">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title">Navigation</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="mb-3">
+                    <input class="form-control search-input" type="search" placeholder="Search..." />
+                </div>
+
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action bg-transparent text-white" href="/clients">
+                        <i class="bi bi-people me-2"></i>Clients
+                    </a>
+                    <a class="list-group-item list-group-item-action bg-transparent text-white" href="/deals">
+                        <i class="bi bi-cash-stack me-2"></i>Deals
+                    </a>
+                    <a class="list-group-item list-group-item-action bg-transparent text-white" href="/tasks">
+                        <i class="bi bi-check2-square me-2"></i>Tasks
+                    </a>
+                    @can('view', auth()->user())
+                        <a class="list-group-item list-group-item-action bg-transparent text-white" href="/logs">
+                            <i class="bi bi-activity me-2"></i>Logs
+                        </a>
+                    @endcan
+                </div>
+
+                <div class="mt-4 d-grid gap-2">
+                    <a href="/clients/create" class="btn btn-primary rounded-pill">
+                        <i class="bi bi-plus-lg me-1"></i>New Client
+                    </a>
+                    <a href="/profile" class="btn btn-soft rounded-pill">
+                        <i class="bi bi-person me-1"></i>Profile
+                    </a>
+                    <a href="/logout" class="btn btn-outline-danger rounded-pill">
+                        <i class="bi bi-box-arrow-right me-1"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
         @yield('content')
     </div>
 

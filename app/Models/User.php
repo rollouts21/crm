@@ -54,7 +54,10 @@ class User extends Authenticatable
 
     public function getRole()
     {
-        return $this->role->id;
+        if ($this->role->id == 1) {
+            return 'Admin';
+        }
+        return 'Manager';
     }
 
 }

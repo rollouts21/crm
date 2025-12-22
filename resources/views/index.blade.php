@@ -4,55 +4,20 @@
 @endsection
 <!-- Offcanvas (mobile nav) -->
 @section('content')
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navOffcanvas">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title">Navigation</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="mb-3">
-                <input class="form-control search-input" type="search" placeholder="Search..." />
-            </div>
-
-            <div class="list-group list-group-flush">
-                <a class="list-group-item list-group-item-action bg-transparent text-white" href="/clients">
-                    <i class="bi bi-people me-2"></i>Clients
-                </a>
-                <a class="list-group-item list-group-item-action bg-transparent text-white" href="/deals">
-                    <i class="bi bi-cash-stack me-2"></i>Deals
-                </a>
-                <a class="list-group-item list-group-item-action bg-transparent text-white" href="/tasks">
-                    <i class="bi bi-check2-square me-2"></i>Tasks
-                </a>
-                <a class="list-group-item list-group-item-action bg-transparent text-white" href="/logs">
-                    <i class="bi bi-activity me-2"></i>Logs
-                </a>
-            </div>
-
-            <div class="mt-4 d-grid gap-2">
-                <a href="/clients/create" class="btn btn-primary rounded-pill">
-                    <i class="bi bi-plus-lg me-1"></i>New Client
-                </a>
-                <a href="/profile" class="btn btn-soft rounded-pill">
-                    <i class="bi bi-person me-1"></i>Profile
-                </a>
-                <a href="/logout" class="btn btn-outline-danger rounded-pill">
-                    <i class="bi bi-box-arrow-right me-1"></i>Logout
-                </a>
-            </div>
-        </div>
-    </div>
-
     <!-- Page -->
     <main class="container-fluid px-3 px-lg-4 py-4">
         <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <span class="chip"><i class="bi bi-calendar3 me-2"></i>Today</span>
-                    <span class="chip"><i class="bi bi-shield-lock me-2"></i>Role: Admin</span>
+                    <span class="chip"><i class="bi bi-shield-lock me-2"></i>Role: {{ auth()->user()->getRole() }}</span>
                 </div>
                 <h1 class="h3 text-white mb-1 page-title">Dashboard</h1>
-                <div class="text-muted-soft">Overview of clients, deals, tasks and recent activity.</div>
+                <div class="text-muted-soft">Overview of clients, deals, tasks and
+                    @can('view', auth()->user())
+                        recent activity.
+                    @endcan
+                </div>
             </div>
 
             <div class="d-flex gap-2">
@@ -210,61 +175,64 @@
             </div>
 
             <!-- Activity / Logs -->
-            <div class="col-lg-5">
-                <div class="glass p-3 h-100">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div>
-                            <div class="text-white fw-semibold">Recent Activity</div>
-                            <div class="text-muted-soft small">Last 10 events from audit log.</div>
-                        </div>
-                        <a href="/logs" class="btn btn-soft btn-sm rounded-pill px-3">
-                            <i class="bi bi-activity me-1"></i>Open Logs
-                        </a>
-                    </div>
 
-                    <div class="list-group list-group-darkish">
-                        <div class="list-group-item px-0 py-3">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="text-white">
-                                        Deal <span class="fw-semibold">Website for Bakery</span> marked as
-                                        <span class="badge text-bg-success rounded-pill">WON</span>
+            @can('view', auth()->user())
+                <div class="col-lg-5">
+                    <div class="glass p-3 h-100">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div>
+                                <div class="text-white fw-semibold">Recent Activity</div>
+                                <div class="text-muted-soft small">Last 10 events from audit log.</div>
+                            </div>
+                            <a href="/logs" class="btn btn-soft btn-sm rounded-pill px-3">
+                                <i class="bi bi-activity me-1"></i>Open Logs
+                            </a>
+                        </div>
+
+                        <div class="list-group list-group-darkish">
+                            <div class="list-group-item px-0 py-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="text-white">
+                                            Deal <span class="fw-semibold">Website for Bakery</span> marked as
+                                            <span class="badge text-bg-success rounded-pill">WON</span>
+                                        </div>
+                                        <div class="text-muted-soft small">by Admin • Deal #152</div>
                                     </div>
-                                    <div class="text-muted-soft small">by Admin • Deal #152</div>
+                                    <small class="text-muted-soft text-nowrap">10m ago</small>
                                 </div>
-                                <small class="text-muted-soft text-nowrap">10m ago</small>
+                            </div>
+
+                            <div class="list-group-item px-0 py-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="text-white">New client <span class="fw-semibold">John Smith</span>
+                                            created</div>
+                                        <div class="text-muted-soft small">source: Instagram • Client #88</div>
+                                    </div>
+                                    <small class="text-muted-soft text-nowrap">1h ago</small>
+                                </div>
+                            </div>
+
+                            <div class="list-group-item px-0 py-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="text-white">Task <span class="fw-semibold">Call supplier</span>
+                                            completed</div>
+                                        <div class="text-muted-soft small">Task #403</div>
+                                    </div>
+                                    <small class="text-muted-soft text-nowrap">Today</small>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="list-group-item px-0 py-3">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="text-white">New client <span class="fw-semibold">John Smith</span>
-                                        created</div>
-                                    <div class="text-muted-soft small">source: Instagram • Client #88</div>
-                                </div>
-                                <small class="text-muted-soft text-nowrap">1h ago</small>
-                            </div>
+                        <div class="mt-3 text-muted-soft small">
+                            Tip: keep activity and KPIs on dashboard; details live in <a
+                                class="text-decoration-underline text-white" href="/logs">Logs</a>.
                         </div>
-
-                        <div class="list-group-item px-0 py-3">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <div class="text-white">Task <span class="fw-semibold">Call supplier</span>
-                                        completed</div>
-                                    <div class="text-muted-soft small">Task #403</div>
-                                </div>
-                                <small class="text-muted-soft text-nowrap">Today</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-3 text-muted-soft small">
-                        Tip: keep activity and KPIs on dashboard; details live in <a
-                            class="text-decoration-underline text-white" href="/logs">Logs</a>.
                     </div>
                 </div>
-            </div>
+            @endcan
         </div>
 
     </main>
