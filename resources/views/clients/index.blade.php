@@ -14,7 +14,7 @@
             </div>
 
             <div class="d-flex gap-2">
-                <a href="/clients/create" class="btn btn-primary rounded-pill px-3">
+                <a href="{{ route('clients.create') }}" class="btn btn-primary rounded-pill px-3">
                     <i class="bi bi-plus-lg me-1"></i>Add Client
                 </a>
             </div>
@@ -67,82 +67,88 @@
 
         <!-- Clients table -->
         <div class="glass p-0">
-            <div class="table-responsive">
-                <table class="table table-darkish table-hover align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th>Client</th>
-                            <th>Contact</th>
-                            <th>Status</th>
-                            <th>Source</th>
-                            <th>Deals</th>
-                            <th>Last contact</th>
-                            <th class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            @if ($clients->isEmpty())
+                <p class="text-white text-center">Clients not found</p>
+                <div class="table-responsive">
+                @else
+                    <table class="table table-darkish table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                                <th>Source</th>
+                                <th>Deals</th>
+                                <th>Last contact</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                        <tr>
-                            <td>
-                                <div class="fw-semibold text-white">Coffee House</div>
-                                <div class="text-muted-soft small">Company</div>
-                            </td>
-                            <td>
-                                <div>+1 234 567 89</div>
-                                <div class="text-muted-soft small">coffee@mail.com</div>
-                            </td>
-                            <td>
-                                <span class="badge text-bg-success rounded-pill">Qualified</span>
-                            </td>
-                            <td>Instagram</td>
-                            <td>3</td>
-                            <td class="text-nowrap">Today</td>
-                            <td class="text-end">
-                                <a href="/clients/1" class="btn btn-sm btn-soft rounded-pill px-3">
-                                    View
-                                </a>
-                                <a href="/clients/1/edit" class="btn btn-sm btn-outline-light rounded-pill px-3">
-                                    Edit
-                                </a>
-                            </td>
-                        </tr>
 
-                        <tr>
-                            <td>
-                                <div class="fw-semibold text-white">John Smith</div>
-                                <div class="text-muted-soft small">Individual</div>
-                            </td>
-                            <td>
-                                <div>+1 987 654 32</div>
-                            </td>
-                            <td>
-                                <span class="badge text-bg-secondary rounded-pill">New</span>
-                            </td>
-                            <td>Website</td>
-                            <td>0</td>
-                            <td class="text-nowrap text-muted-soft">—</td>
-                            <td class="text-end">
-                                <a href="/clients/2" class="btn btn-sm btn-soft rounded-pill px-3">
-                                    View
-                                </a>
-                                <a href="/clients/2/edit" class="btn btn-sm btn-outline-light rounded-pill px-3">
-                                    Edit
-                                </a>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
+                            @foreach ($clients as $client)
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold text-white">{{ $client->name }}</div>
+                                        <div class="text-muted-soft small">Company</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ $client->phone }}</div>
+                                        <div class="text-muted-soft small">{{ $client->email }}</div>
+                                    </td>
+                                    <td>
+                                        <span class="badge text-bg-success rounded-pill">Qualified</span>
+                                    </td>
+                                    <td>{{ $client->source_id }} {{ $client->owner_id }}</td>
+                                    <td>3</td>
+                                    <td class="text-nowrap">Today</td>
+                                    <td class="text-end">
+                                        <a href="/clients/1" class="btn btn-sm btn-soft rounded-pill px-3">
+                                            View
+                                        </a>
+                                        <a href="/clients/1/edit" class="btn btn-sm btn-outline-light rounded-pill px-3">
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
 
             <!-- Pagination placeholder -->
-            <div class="d-flex justify-content-between align-items-center p-3">
+            {{-- <div class="d-flex justify-content-between align-items-center p-3">
                 <div class="text-muted-soft small">Showing 1–2 of 24</div>
                 <div>
                     <button class="btn btn-soft btn-sm rounded-pill">Prev</button>
                     <button class="btn btn-soft btn-sm rounded-pill">Next</button>
                 </div>
+            </div> --}}
+            <div class="d-flex justify-content-between align-items-center p-3">
+                <div class="text-muted-soft small">
+                    Showing
+                    {{ $clients->firstItem() ?? 0 }}–{{ $clients->lastItem() ?? 0 }}
+                    of {{ $clients->total() }}
+                </div>
+
+                <div class="d-flex gap-2">
+                    {{-- Prev --}}
+                    @if ($clients->onFirstPage())
+                        <span class="btn btn-soft btn-sm rounded-pill disabled">Prev</span>
+                    @else
+                        <a class="btn btn-soft btn-sm rounded-pill" href="{{ $clients->previousPageUrl() }}">Prev</a>
+                    @endif
+
+                    {{-- Next --}}
+                    @if ($clients->hasMorePages())
+                        <a class="btn btn-soft btn-sm rounded-pill" href="{{ $clients->nextPageUrl() }}">Next</a>
+                    @else
+                        <span class="btn btn-soft btn-sm rounded-pill disabled">Next</span>
+                    @endif
+                </div>
             </div>
+
         </div>
 
     </main>

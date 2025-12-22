@@ -176,17 +176,21 @@
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav me-auto gap-1">
                         <li class="nav-item">
-                            <a class="nav-link active px-3" href="/clients"><i class="bi bi-people me-2"></i>Clients</a>
+                            <a class="nav-link {{ request()->routeIs('clients.*') ? 'active' : '' }} px-3"
+                                href="{{ route('clients.index') }}"><i class="bi bi-people me-2"></i>Clients</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link px-3" href="/deals"><i class="bi bi-cash-stack me-2"></i>Deals</a>
+                            <a class="nav-link {{ request()->routeIs('deals.*') ? 'active' : '' }} px-3"
+                                href="/deals"><i class="bi bi-cash-stack me-2"></i>Deals</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link px-3" href="/tasks"><i class="bi bi-check2-square me-2"></i>Tasks</a>
+                            <a class="nav-link {{ request()->routeIs('tasks.*') ? 'active' : '' }} px-3"
+                                href="/tasks"><i class="bi bi-check2-square me-2"></i>Tasks</a>
                         </li>
                         @can('view', auth()->user())
                             <li class="nav-item">
-                                <a class="nav-link px-3" href="/logs"><i class="bi bi-activity me-2"></i>Logs</a>
+                                <a class="nav-link px-3 {{ request()->routeIs('logs.*') ? 'active' : '' }}"
+                                    href="/logs"><i class="bi bi-activity me-2"></i>Logs</a>
                             </li>
                         @endcan
                     </ul>
