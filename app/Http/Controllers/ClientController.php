@@ -1,16 +1,21 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClientIndexRequest;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use App\Models\Source;
+use App\QueryFilters\ClientFilters;
 use Illuminate\View\View;
 
 class ClientController extends Controller
 {
-    public function index(): View
+    public function index(ClientIndexRequest $request): View
     {
-        return view('clients.index', ['clients' => Client::paginate(10)]);
+        $filters = $request->validated();
+        $clients = Client::query();
+        $clients = app(ClientFilters::class)->apply($clients, $filters);
+        return view('clients.index', ['clients' => $clients->paginate(15)->withQueryString(), 'sources' => Source::all()]);
     }
 
     public function create(): View

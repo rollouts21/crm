@@ -22,38 +22,40 @@
 
         <!-- Filters -->
         <div class="glass p-3 mb-4">
-            <form class="row g-2 align-items-end">
+            <form class="row g-2 align-items-end" action="{{ route('clients.index') }}">
                 <div class="col-md-4">
                     <label class="form-label text-muted-soft small">Search</label>
-                    <input type="text" class="form-control search-input" placeholder="Name, phone or email">
+                    <input type="text" name="q" value="{{ request('q') }}" class="form-control search-input"
+                        placeholder="Name, phone or email">
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Status</label>
-                    <select class="form-select search-input">
-                        <option value="">All</option>
-                        <option>New</option>
-                        <option>Contacted</option>
-                        <option>Qualified</option>
-                        <option>VIP</option>
+                    <select class="form-select search-input" name="status">
+                        <option class="text-black" value="">All</option>
+                        @foreach (\App\Enums\ClientStatusEnum::cases() as $status)
+                            <option class="text-black" {{ request('status') == $status->value ? 'selected' : '' }}
+                                value="{{ $status->value }}">{{ $status->label() }}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Source</label>
-                    <select class="form-select search-input">
-                        <option value="">Any</option>
-                        <option>Instagram</option>
-                        <option>Website</option>
-                        <option>Referral</option>
+                    <select class="form-select search-input" name="source_id">
+                        <option class="text-black" value="">Any</option>
+                        @foreach ($sources as $source)
+                            <option {{ request('source_id') == $source->id ? 'selected' : '' }} class="text-black"
+                                value="{{ $source->id }}">{{ $source->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Sort</label>
                     <select class="form-select search-input">
-                        <option>Last contact</option>
-                        <option>Newest</option>
+                        <option class="text-black">Last contact</option>
+                        <option class="text-black">Newest</option>
                     </select>
                 </div>
 
