@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Enums\DealsStatusEnum;
 use App\Http\Requests\DealsRequest;
 use App\Models\Client;
 use App\Models\Deal;
@@ -38,6 +39,11 @@ class DealsController extends Controller
     public function update(Client $client, Deal $deal, DealsRequest $request)
     {
         $data = $request->validated();
+        if (isset($data['status'])) {
+            if ($data['status'] == DealsStatusEnum::Won->value || $data['status'] == DealsStatusEnum::Lost->value) {
+                $deal->update(['closed_at' => now()]);
+            }
+        }
         $deal->update($data);
 
         return redirect()->route('deals.index');

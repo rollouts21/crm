@@ -187,6 +187,7 @@
                             <a class="nav-link {{ request()->routeIs('tasks.*') ? 'active' : '' }} px-3"
                                 href="/tasks"><i class="bi bi-check2-square me-2"></i>Tasks</a>
                         </li>
+
                         @can('view', auth()->user())
                             <li class="nav-item">
                                 <a class="nav-link px-3 {{ request()->routeIs('logs.*') ? 'active' : '' }}"
@@ -206,10 +207,15 @@
                             <i class="bi bi-plus-lg me-1"></i>New Client
                         </a>
 
+
                         <div class="dropdown">
                             <button class="btn btn-soft btn-sm rounded-pill px-3 dropdown-toggle"
                                 data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle me-1"></i>{{ auth()->user()->name }}
+
+                                @auth
+                                    <i class="bi bi-person-circle me-1"></i>{{ auth()->user()->name }}
+
+                                @endauth
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow">
                                 <li><a class="dropdown-item" href="/profile"><i
