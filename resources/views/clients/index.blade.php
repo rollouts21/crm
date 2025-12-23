@@ -53,11 +53,14 @@
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Sort</label>
-                    <select class="form-select search-input">
-                        <option class="text-black">Last contact</option>
-                        <option class="text-black">Newest</option>
+                    <select class="form-select search-input" name="sort">
+                        <option class="text-black" value="last_contact_at"
+                            {{ request('sort') == 'last_contact_at' ? 'selected' : '' }}>Last contact</option>
+                        <option class="text-black" value="created_at"
+                            {{ request('sort') == 'created_at' ? 'selected' : '' }}>Newest</option>
                     </select>
                 </div>
+
 
                 <div class="col-md-2 d-grid">
                     <button class="btn btn-soft">
@@ -106,7 +109,7 @@
                                     <td>{{ $client->source_id }}</td>
                                     <td>3</td>
                                     <td class="text-nowrap">
-                                        {{ $client->last_contact_at != null ? $client->last_contact_at->format('d.m.y, h:m') : 'Not contacted' }}
+                                        {{ $client->last_contact_at != null ? $client->last_contact_at->format('d.m.Y, h:m') : 'Not contacted' }}
                                     </td>
                                     <td>{{ $client->getOwner() }}</td>
                                     <td class="text-end">

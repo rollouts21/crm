@@ -24,6 +24,7 @@ class ClientIndexRequest extends FormRequest
             'q'         => 'nullable',
             'status'    => 'nullable',
             'source_id' => 'nullable',
+            'sort'      => 'nullable',
         ];
     }
 }

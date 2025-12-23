@@ -2,12 +2,13 @@
 namespace App\Models;
 
 use App\Enums\ClientStatusEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
     protected $guarded = false;
 
     protected $casts = [

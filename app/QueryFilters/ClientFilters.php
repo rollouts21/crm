@@ -1,6 +1,7 @@
 <?php
 namespace App\QueryFilters;
 
+use App\QueryFilters\Filters\ClientSort;
 use App\QueryFilters\Filters\SearchFilter;
 use App\QueryFilters\Filters\SourceFilter;
 use App\QueryFilters\Filters\StatusFilter;
@@ -13,6 +14,7 @@ class ClientFilters
         $query = (new SearchFilter($filters))->apply($query);
         $query = (new StatusFilter($filters))->apply($query);
         $query = (new SourceFilter($filters))->apply($query);
+        $query = (new ClientSort($filters))->apply($query);
         return $query;
     }
 
