@@ -29,4 +29,17 @@ class DealsController extends Controller
     {
         return view('deals.show', ['client' => $client, 'deal' => $deal]);
     }
+
+    public function edit(Client $client, Deal $deal)
+    {
+        return view('deals.edit', ['deal' => $deal]);
+    }
+
+    public function update(Client $client, Deal $deal, DealsRequest $request)
+    {
+        $data = $request->validated();
+        $deal->update($data);
+
+        return redirect()->route('deals.index');
+    }
 }

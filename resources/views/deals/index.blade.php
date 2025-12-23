@@ -102,7 +102,7 @@
                                         class="text-white text-decoration-underline">{{ $deal->client->name }}</a>
                                     <div class="text-muted-soft small">Owner: {{ $deal->owner->name }}</div>
                                 </td>
-                                <td class="text-nowrap">{{ $deal->amount }} RUB</td>
+                                <td class="text-nowrap">{{ number_format($deal->amount, 2, ',', ' ') }} RUB</td>
                                 <td><span
                                         class="badge {{ $deal->status->badgeClass() }} rounded-pill">{{ $deal->status->label() }}</span>
                                 </td>
@@ -112,7 +112,7 @@
                                 <td class="text-end">
                                     <a href="{{ route('clients.deals.show', [$deal->client->id, $deal->id]) }}"
                                         class="btn btn-sm btn-soft rounded-pill px-3">View</a>
-                                    <a href="/deals/152/edit"
+                                    <a href="{{ route('clients.deals.edit', [$deal->client->id, $deal->id]) }}"
                                         class="btn btn-sm btn-outline-light rounded-pill px-3">Edit</a>
                                 </td>
                             </tr>

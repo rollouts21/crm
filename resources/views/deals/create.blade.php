@@ -31,7 +31,7 @@
                 <div class="col-md-4">
                     <label class="form-label text-muted-soft">Status</label>
                     <select class="form-select search-input" name="status" style="background-color: rgba(255,255,255,.06)">
-                        @foreach (\App\Enums\ClientStatusEnum::cases() as $status)
+                        @foreach (\App\Enums\DealsStatusEnum::cases() as $status)
                             <option class="text-black" value="{{ $status->value }}">{{ $status->label() }}</option>
                         @endforeach
                     </select>

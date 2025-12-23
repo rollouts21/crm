@@ -8,65 +8,60 @@
 
         <div class="mb-4">
             <div class="d-flex align-items-center gap-2 mb-2">
-                <a href="/deals/152" class="chip">
+                <a href="{{ route('clients.deals.show', [$deal->client->id, $deal->id]) }}" class="chip">
                     <i class="bi bi-arrow-left me-2"></i>Back to Deal
                 </a>
-                <span class="chip"><i class="bi bi-hash me-2"></i>Deal #152</span>
             </div>
 
-            <h1 class="h3 text-white mb-1">Edit Deal</h1>
+            <h1 class="h3 text-white mb-1">Update Deal</h1>
             <div class="text-muted-soft">Update basic information (some fields may be locked after closing)</div>
         </div>
 
         <div class="glass p-4" style="max-width: 980px;">
-            <form class="row g-3" method="POST" action="/deals/152">
-                <!-- @csrf -->
-                <!-- @method('PATCH') -->
+            <form class="row g-3" method="POST"
+                action="{{ route('clients.deals.update', [$deal->client->id, $deal->id]) }}">
+                @csrf
+                @method('patch')
 
                 <div class="col-md-8">
                     <label class="form-label text-muted-soft">Title</label>
-                    <input type="text" class="form-control search-input" name="title" value="Website redesign">
+                    <input type="text" value="{{ $deal->title }}" class="form-control search-input" name="title"
+                        placeholder="e.g., Website redesign">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label text-muted-soft">Status</label>
                     <select class="form-select search-input" name="status" style="background-color: rgba(255,255,255,.06)">
-                        <option value="new">New</option>
-                        <option value="in_progress" selected>In progress</option>
-                        <option value="won">Won</option>
-                        <option value="lost">Lost</option>
+                        @foreach (\App\Enums\DealsStatusEnum::cases() as $status)
+                            <option class="text-black" {{ $deal->status->value == $status->value ? 'selected' : '' }}
+                                value="{{ $status->value }}">{{ $status->label() }}</option>
+                        @endforeach
                     </select>
+                    <div class="text-muted-soft small mt-1">Tip: set Won/Lost from the deal page (with rules).</div>
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label text-muted-soft">Amount</label>
-                    <input type="number" class="form-control search-input" name="amount" value="2500">
-                    <div class="text-muted-soft small mt-1">This can be locked for managers if deal is closed.</div>
+                    <input type="number" class="form-control search-input" value="{{ $deal->amount }}" name="amount"
+                        placeholder="2500">
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label text-muted-soft">Currency</label>
-                    <select class="form-select search-input" name="currency"
-                        style="background-color: rgba(255,255,255,.06)">
-                        <option selected>EUR</option>
-                        <option>USD</option>
-                        <option>RUB</option>
-                    </select>
-                </div>
 
                 <div class="col-md-4">
                     <label class="form-label text-muted-soft">Expected close</label>
-                    <input type="date" class="form-control search-input" name="expected_close_at" value="2026-01-10">
+                    <input type="date" value="{{ $deal->expected_close_at->format('Y-m-d') }}"
+                        class="form-control search-input" name="expected_close_at">
                 </div>
 
                 <div class="col-12">
                     <label class="form-label text-muted-soft">Comment</label>
-                    <textarea class="form-control search-input" name="comment" rows="4">Client requested 2 design variants and timeline estimate.</textarea>
+                    <textarea class="form-control search-input" name="comment" rows="4"
+                        placeholder="Any context, constraints, notes..."> {{ $deal->comment }}</textarea>
                 </div>
 
                 <div class="col-12 d-flex gap-2 mt-3">
                     <button class="btn btn-primary rounded-pill px-4" type="submit">Update Deal</button>
-                    <a href="/deals/152" class="btn btn-soft rounded-pill px-4">Cancel</a>
+                    <a href="/clients/88" class="btn btn-soft rounded-pill px-4">Cancel</a>
                 </div>
             </form>
         </div>

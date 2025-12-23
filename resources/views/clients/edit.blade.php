@@ -71,7 +71,7 @@
 
                 <div class="col-12 d-flex gap-2 mt-3">
                     <button class="btn btn-primary rounded-pill px-4">
-                        Save Client
+                        Update Client
                     </button>
                     <a href="{{ route('clients.index') }}" class="btn btn-soft rounded-pill px-4">
                         Cancel

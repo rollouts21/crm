@@ -24,7 +24,8 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2">
-                <a href="/deals/152/edit" class="btn btn-soft rounded-pill px-3">
+                <a href="{{ route('clients.deals.edit', [$client->id, $deal->id]) }}"
+                    class="btn btn-soft rounded-pill px-3">
                     <i class="bi bi-pencil me-1"></i>Edit
                 </a>
 
@@ -57,7 +58,8 @@
                             <div class="row g-3 mt-1">
                                 <div class="col-md-6">
                                     <div class="text-muted-soft small mb-1">Amount</div>
-                                    <div class="text-white fw-semibold h4 mb-0">{{ $deal->amount }} RUB</div>
+                                    <div class="text-white fw-semibold h4 mb-0">
+                                        {{ number_format($deal->amount, 2, ',', ' ') }} RUB</div>
                                 </div>
 
                                 <div class="col-md-6">
@@ -294,16 +296,17 @@
                     </div>
                     <div class="modal-body">
                         This will set <strong>closed_at</strong> automatically and create an audit log entry.
-                        <div class="mt-3">
-                            <label class="form-label text-muted-soft small">Optional note</label>
-                            <textarea class="form-control search-input" rows="3"
-                                placeholder="e.g., payment received, delivery scheduled..."></textarea>
-                        </div>
                     </div>
                     <div class="modal-footer" style="border-color: rgba(255,255,255,.10);">
-                        <button type="button" class="btn btn-soft rounded-pill px-3"
-                            data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-outline-success rounded-pill px-3">Confirm Won</button>
+                        <form action="{{ route('clients.deals.update', [$deal->client->id, $deal->id]) }}"
+                            method="post">
+                            @csrf
+                            @method('patch')
+                            <input type="hidden" name="status" value="won">
+                            <button type="button" class="btn btn-soft rounded-pill px-3"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-outline-success rounded-pill px-3">Confirm Won</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -311,25 +314,31 @@
 
         <!-- Lost modal -->
         <div class="modal fade" id="markLostModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content text-white"
-                    style="background: rgba(11,18,32,.95); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px);">
-                    <div class="modal-header" style="border-color: rgba(255,255,255,.10);">
-                        <h5 class="modal-title">Mark deal as Lost</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="text-muted-soft small mb-2">Comment is required for Lost deals.</div>
-                        <label class="form-label text-muted-soft small">Lost reason / comment</label>
-                        <textarea class="form-control search-input" rows="4" placeholder="Explain why the deal was lost..."></textarea>
-                    </div>
-                    <div class="modal-footer" style="border-color: rgba(255,255,255,.10);">
-                        <button type="button" class="btn btn-soft rounded-pill px-3"
-                            data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-outline-danger rounded-pill px-3">Confirm Lost</button>
+            <form action="{{ route('clients.deals.update', [$deal->client->id, $deal->id]) }}" method="post">
+                @csrf
+                @method('patch')
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-white"
+                        style="background: rgba(11,18,32,.95); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px);">
+                        <div class="modal-header" style="border-color: rgba(255,255,255,.10);">
+                            <h5 class="modal-title">Mark deal as Lost</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-muted-soft small mb-2">Comment is required for Lost deals.</div>
+                            <label class="form-label text-muted-soft small">Lost reason / comment</label>
+                            <textarea class="form-control search-input" rows="4" name="lost_reason"
+                                placeholder="Explain why the deal was lost..."></textarea>
+                        </div>
+                        <div class="modal-footer" style="border-color: rgba(255,255,255,.10);">
+                            <button type="button" class="btn btn-soft rounded-pill px-3"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <input type="hidden" name="status" value="lost">
+                            <button type="submit" class="btn btn-outline-danger rounded-pill px-3">Confirm Lost</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
 
     </main>

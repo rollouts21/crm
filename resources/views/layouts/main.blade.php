@@ -176,11 +176,11 @@
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav me-auto gap-1">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('clients.*') ? 'active' : '' }} px-3"
+                            <a class="nav-link {{ request()->routeIs(['clients.create', 'clients.show', 'clients.edit', 'clients.index']) ? 'active' : '' }} px-3"
                                 href="{{ route('clients.index') }}"><i class="bi bi-people me-2"></i>Clients</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('deals.*') ? 'active' : '' }} px-3"
+                            <a class="nav-link {{ request()->routeIs(['*.deals.*', 'deals.*']) ? 'active' : '' }} px-3"
                                 href="{{ route('deals.index') }}"><i class="bi bi-cash-stack me-2"></i>Deals</a>
                         </li>
                         <li class="nav-item">

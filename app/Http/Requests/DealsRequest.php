@@ -20,14 +20,15 @@ class DealsRequest extends FormRequest
      */
     public function rules(): array
     {
+        $isUpdate = $this->isMethod('patch' || $this->isMethod('put'));
         return [
-            'title'             => 'required',
-            'amount'            => 'required',
-            'status'            => 'required',
-            'expected_close_at' => 'required',
-            'closed_at'         => 'nullable',
-            'lost_reason'       => 'nullable',
-            'comment'           => 'required',
+            'title'             => [$isUpdate ? 'sometimes' : 'required'],
+            'amount'            => [$isUpdate ? 'sometimes' : 'required'],
+            'status'            => [$isUpdate ? 'sometimes' : 'required'],
+            'expected_close_at' => [$isUpdate ? 'sometimes' : 'required'],
+            'closed_at'         => [$isUpdate ? 'sometimes' : 'nullable'],
+            'lost_reason'       => [$isUpdate ? 'sometimes' : 'nullable'],
+            'comment'           => [$isUpdate ? 'sometimes' : 'required'],
         ];
     }
 }
