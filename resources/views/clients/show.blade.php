@@ -136,7 +136,7 @@
                     <hr class="my-4" style="border-color: rgba(255,255,255,.08);">
 
                     <div class="d-flex flex-wrap gap-2">
-                        <a href="/clients/88/deals/create" class="btn btn-primary rounded-pill px-3">
+                        <a href="{{ route('clients.deals.create', $client->id) }}" class="btn btn-primary rounded-pill px-3">
                             <i class="bi bi-plus-lg me-1"></i>Add Deal
                         </a>
                         <a href="/tasks/create?client_id=88" class="btn btn-soft rounded-pill px-3">

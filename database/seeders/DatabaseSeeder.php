@@ -2,6 +2,7 @@
 namespace Database\Seeders;
 
 use App\Models\Client;
+use App\Models\Deal;
 use App\Models\Source;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,7 +23,8 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Source::factory(5)->create();
-        Client::factory(70)->create();
+        // Source::factory(5)->create();
+        // Client::factory(70)->create();
+        Deal::factory(65)->create();
     }
 }

@@ -181,7 +181,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('deals.*') ? 'active' : '' }} px-3"
-                                href="/deals"><i class="bi bi-cash-stack me-2"></i>Deals</a>
+                                href="{{ route('deals.index') }}"><i class="bi bi-cash-stack me-2"></i>Deals</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('tasks.*') ? 'active' : '' }} px-3"
