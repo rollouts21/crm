@@ -111,7 +111,7 @@
                                     <td class="text-nowrap">
                                         {{ $client->last_contact_at != null ? $client->last_contact_at->format('d.m.Y, h:m') : 'Not contacted' }}
                                     </td>
-                                    <td>{{ $client->getOwner() }}</td>
+                                    <td>{{ $client->owner->name }}</td>
                                     <td class="text-end">
                                         <form action="{{ route('clients.destroy', $client->id) }}" method="post">
                                             @csrf

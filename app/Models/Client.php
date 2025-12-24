@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Enums\ClientStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
@@ -16,9 +17,14 @@ class Client extends Model
         'last_contact_at' => 'datetime',
     ];
 
-    public function getOwner()
+    // public function getOwner()
+    // {
+    //     return User::find($this->owner_id)->name;
+    // }
+
+    public function owner()
     {
-        return User::find($this->owner_id)->name;
+        return $this->belongsTo(User::class);
     }
 
     public function source()

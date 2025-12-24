@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DealsController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +19,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/{client}', [ClientController::class, 'show'])->name('show');
         Route::get('/{client}/edit', [ClientController::class, 'edit'])->name('edit');
         Route::patch('/{client}', [ClientController::class, 'update'])->name('update');
-        Route::delete('/{client}', [ClientController::class,'destroy'])->name('destroy');
+        Route::delete('/{client}', [ClientController::class, 'destroy'])->name('destroy');
+        Route::name('deals.')->prefix('{client}/deals')->group(function () {
+            Route::get('/create', [DealsController::class, 'create'])->name('create');
+            Route::post('/store', [DealsController::class, 'store'])->name('store');
+            Route::get('/{deal}', [DealsController::class, 'show'])->name('show');
+            Route::get('/{deal}/edit', [DealsController::class, 'edit'])->name('edit');
+            Route::patch('/{deal}', [DealsController::class, 'update'])->name('update');
+            Route::delete('/{deal}', [DealsController::class, 'destroy'])->name('destroy');
+        });
     });
+    Route::get('/deals', [DealsController::class, 'index'])->name('deals.index');
 
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

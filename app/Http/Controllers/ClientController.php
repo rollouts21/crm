@@ -13,7 +13,7 @@ class ClientController extends Controller
     public function index(ClientIndexRequest $request): View
     {
         $filters = $request->validated();
-        $clients = Client::query();
+        $clients = Client::query()->with('owner');
         $clients = app(ClientFilters::class)->apply($clients, $filters);
         return view('clients.index', ['clients' => $clients->paginate(15)->withQueryString(), 'sources' => Source::all()]);
     }

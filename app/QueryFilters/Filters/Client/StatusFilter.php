@@ -1,9 +1,9 @@
 <?php
-namespace App\QueryFilters\Filters;
+namespace App\QueryFilters\Filters\Client;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class ClientSort
+class StatusFilter
 {
     public function __construct(protected array $filters = [])
     {
@@ -12,10 +12,10 @@ class ClientSort
 
     public function apply(Builder $query): Builder
     {
-        if (! isset($this->filters["sort"]) || $this->filters['sort'] === '') {
+        if (! isset($this->filters["status"]) || $this->filters['status'] === '') {
             return $query;
         }
 
-        return $query->orderBy($this->filters['sort'], 'desc');
+        return $query->where('status', $this->filters['status']);
     }
 }

@@ -1,10 +1,10 @@
 <?php
 namespace App\QueryFilters;
 
-use App\QueryFilters\Filters\ClientSort;
-use App\QueryFilters\Filters\SearchFilter;
-use App\QueryFilters\Filters\SourceFilter;
-use App\QueryFilters\Filters\StatusFilter;
+use App\QueryFilters\Filters\Client\ClientSort;
+use App\QueryFilters\Filters\Client\SearchFilter;
+use App\QueryFilters\Filters\Client\SourceFilter;
+use App\QueryFilters\Filters\Client\StatusFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 class ClientFilters

@@ -1,5 +1,5 @@
 <?php
-namespace App\QueryFilters\Filters;
+namespace App\QueryFilters\Filters\Deal;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -19,7 +19,7 @@ class SearchFilter
         $like = '%' . addcslashes($q, '%_\\') . '%';
 
         return $query->where(function (Builder $sub) use ($like) {
-            $sub->where('name', 'like', $like)->orWhere('phone', 'like', $like)->orWhere('email', 'like', $like)->orWhere('comment', 'like', $like);
+            $sub->where('title', 'like', $like)->orWhere('comment', 'like', $like)->orWhere('amount', 'like', $like);
         });
     }
 }
