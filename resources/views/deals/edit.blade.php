@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    Create Client
+    Edit {{ $deal->title }}
 @endsection
 
 @section('content')

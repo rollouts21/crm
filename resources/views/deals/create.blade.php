@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    Create Client
+    Create Deal
 @endsection
 
 @section('content')
