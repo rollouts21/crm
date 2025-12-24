@@ -1,5 +1,5 @@
 <?php
-namespace App\QueryFilters\Filters;
+namespace App\QueryFilters\Filters\Client;
 
 use Illuminate\Database\Eloquent\Builder;
 

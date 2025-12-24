@@ -2,15 +2,20 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DealsStatusEnum;
+use App\Http\Requests\DealIndexRequest;
 use App\Http\Requests\DealsRequest;
 use App\Models\Client;
 use App\Models\Deal;
+use App\QueryFilters\DealFilters;
 
 class DealsController extends Controller
 {
-    public function index()
+    public function index(DealIndexRequest $request)
     {
-        return view('deals.index', ['deals' => Deal::with('client', 'owner')->paginate(10)->withQueryString()]);
+        $filters = $request->validated();
+        $deals   = Deal::query()->with('client', 'owner');
+        $deals   = app(DealFilters::class)->apply($deals, $filters);
+        return view('deals.index', ['deals' => $deals->paginate(10)->withQueryString()]);
     }
 
     public function create(Client $client)

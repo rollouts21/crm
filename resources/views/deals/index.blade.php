@@ -22,47 +22,44 @@
 
         <!-- Filters -->
         <div class="glass p-3 mb-4">
-            <form class="row g-2 align-items-end" method="GET" action="/deals">
+            <form class="row g-2 align-items-end" method="GET" action="{{ route('deals.index') }}">
+
                 <div class="col-md-3">
                     <label class="form-label text-muted-soft small">Search</label>
-                    <input type="text" class="form-control search-input" name="search"
+                    <input type="text" class="form-control search-input" value="{{ request('q') }}" name="q"
                         placeholder="Deal title or client">
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Status</label>
                     <select class="form-select search-input" name="status" style="background-color: rgba(255,255,255,.06)">
-                        <option value="">All</option>
-                        <option value="new">New</option>
-                        <option value="in_progress">In progress</option>
-                        <option value="won">Won</option>
-                        <option value="lost">Lost</option>
+                        <option value="" class="text-black">All</option>
+                        @foreach (\App\Enums\DealsStatusEnum::cases() as $status)
+                            <option class="text-black" {{ request('status') == $status->value ? 'selected' : '' }}
+                                value="{{ $status->value }}">{{ $status->label() }}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Amount</label>
                     <div class="d-flex gap-2">
-                        <input type="number" class="form-control search-input" name="min_amount" placeholder="Min">
-                        <input type="number" class="form-control search-input" name="max_amount" placeholder="Max">
+                        <input type="number" class="form-control search-input" value="{{ request('min') }}" name="min"
+                            placeholder="Min">
+                        <input type="number" class="form-control search-input" value="{{ request('max') }}" name="max"
+                            placeholder="Max">
                     </div>
-                </div>
-
-                <div class="col-md-2">
-                    <label class="form-label text-muted-soft small">Period</label>
-                    <select class="form-select search-input" name="period" style="background-color: rgba(255,255,255,.06)">
-                        <option value="updated">Updated</option>
-                        <option value="created">Created</option>
-                        <option value="closed">Closed</option>
-                    </select>
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Sort</label>
                     <select class="form-select search-input" name="sort" style="background-color: rgba(255,255,255,.06)">
-                        <option value="updated_desc">Updated desc</option>
-                        <option value="amount_desc">Amount desc</option>
-                        <option value="expected_close_asc">Expected close</option>
+                        <option class="text-black" {{ request('sort') == 'updated_at' ? 'selected' : '' }}
+                            value="updated_at">Updated desc</option>
+                        <option class="text-black" {{ request('sort') == 'amount' ? 'selected' : '' }} value="amount">Amount
+                            desc</option>
+                        <option class="text-black" {{ request('sort') == 'expected_close_at' ? 'selected' : '' }}
+                            value="expected_close_at">Expected close</option>
                     </select>
                 </div>
 

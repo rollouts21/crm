@@ -29,7 +29,7 @@
                     <i class="bi bi-pencil me-1"></i>Edit
                 </a>
 
-                <button class="btn btn-outline-success rounded-pill px-3" data-bs-toggle="modal"
+                {{-- <button class="btn btn-outline-success rounded-pill px-3" data-bs-toggle="modal"
                     data-bs-target="#markWonModal">
                     <i class="bi bi-trophy me-1"></i>Mark Won
                 </button>
@@ -37,7 +37,7 @@
                 <button class="btn btn-outline-danger rounded-pill px-3" data-bs-toggle="modal"
                     data-bs-target="#markLostModal">
                     <i class="bi bi-x-circle me-1"></i>Mark Lost
-                </button>
+                </button> --}}
             </div>
         </div>
 
@@ -286,7 +286,7 @@
         </div>
 
         <!-- Won modal -->
-        <div class="modal fade" id="markWonModal" tabindex="-1" aria-hidden="true">
+        {{-- <div class="modal fade" id="markWonModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content text-white"
                     style="background: rgba(11,18,32,.95); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px);">
@@ -310,10 +310,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Lost modal -->
-        <div class="modal fade" id="markLostModal" tabindex="-1" aria-hidden="true">
+        {{-- <div class="modal fade" id="markLostModal" tabindex="-1" aria-hidden="true">
             <form action="{{ route('clients.deals.update', [$deal->client->id, $deal->id]) }}" method="post">
                 @csrf
                 @method('patch')
@@ -339,7 +339,7 @@
                     </div>
                 </div>
             </form>
-        </div>
+        </div> --}}
 
     </main>
 @endsection
