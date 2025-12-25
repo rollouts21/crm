@@ -197,11 +197,7 @@
                     </ul>
 
                     <div class="d-flex align-items-center gap-2">
-                        <div class="d-none d-md-flex align-items-center gap-2">
-                            <i class="bi bi-search text-muted-soft"></i>
-                            <input class="form-control form-control-sm search-input" style="width: 260px;"
-                                type="search" placeholder="Search clients, deals..." />
-                        </div>
+
 
                         <a href="{{ route('clients.create') }}" class="btn btn-primary btn-sm rounded-pill px-3">
                             <i class="bi bi-plus-lg me-1"></i>New Client
@@ -242,18 +238,19 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
             </div>
             <div class="offcanvas-body">
-                <div class="mb-3">
-                    <input class="form-control search-input" type="search" placeholder="Search..." />
-                </div>
+
 
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action bg-transparent text-white" href="/clients">
+                    <a class="list-group-item list-group-item-action bg-transparent text-white"
+                        href="{{ route('clients.index') }}">
                         <i class="bi bi-people me-2"></i>Clients
                     </a>
-                    <a class="list-group-item list-group-item-action bg-transparent text-white" href="/deals">
+                    <a class="list-group-item list-group-item-action bg-transparent text-white"
+                        href="{{ route('deals.index') }}">
                         <i class="bi bi-cash-stack me-2"></i>Deals
                     </a>
-                    <a class="list-group-item list-group-item-action bg-transparent text-white" href="/tasks">
+                    <a class="list-group-item list-group-item-action bg-transparent text-white"
+                        href="{{ route('tasks.index') }}">
                         <i class="bi bi-check2-square me-2"></i>Tasks
                     </a>
                     @can('view', auth()->user())
@@ -264,15 +261,17 @@
                 </div>
 
                 <div class="mt-4 d-grid gap-2">
-                    <a href="/clients/create" class="btn btn-primary rounded-pill">
-                        <i class="bi bi-plus-lg me-1"></i>New Client
-                    </a>
+
+                    <form action="{{ route('logout') }}" method="post"></form>
                     <a href="/profile" class="btn btn-soft rounded-pill">
                         <i class="bi bi-person me-1"></i>Profile
                     </a>
-                    <a href="/logout" class="btn btn-outline-danger rounded-pill">
+
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger rounded-pill">
                         <i class="bi bi-box-arrow-right me-1"></i>Logout
-                    </a>
+                    </button>
+                    </form>
                 </div>
             </div>
         </div>
