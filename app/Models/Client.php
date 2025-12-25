@@ -32,9 +32,27 @@ class Client extends Model
         return $this->belongsTo(Source::class);
     }
 
+    public function allTasks(): int
+    {
+        $count = 0;
+        foreach ($this->deals as $deal) {
+            $count += $deal->tasks->where('status', '=', 'open')->count();
+        }
+        return $count;
+    }
+
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function getWonTotal()
+    {
+        // $total = 0;
+        // foreach ($this->deals as $deal) {
+        //     $total += (int) $deal->where('status', '=', 'won')->get('amount');
+        // }
+        return $this->deals->where('status', '=', 'won')->sum('amount');
     }
 
     public function deals()
