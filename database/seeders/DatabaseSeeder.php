@@ -4,6 +4,7 @@ namespace Database\Seeders;
 use App\Models\Client;
 use App\Models\Deal;
 use App\Models\Source;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         // Source::factory(5)->create();
         // Client::factory(70)->create();
-        Deal::factory(65)->create();
+        // Deal::factory(65)->create();
+        Task::factory(100)->create();
     }
 }

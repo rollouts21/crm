@@ -11,9 +11,10 @@ class Task extends Model
     protected $guarded = false;
 
     protected $casts = [
-        'due_at'   => 'date',
-        'priority' => \App\Enums\TaskPriorityEnum::class,
-        'status'   => \App\Enums\TaskStatusEnum::class,
+        'due_at'       => 'date',
+        'priority'     => \App\Enums\TaskPriorityEnum::class,
+        'status'       => \App\Enums\TaskStatusEnum::class,
+        'completed_at' => 'datetime',
     ];
 
     public function client()

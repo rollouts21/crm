@@ -23,51 +23,59 @@
 
         <!-- Tabs -->
         <div class="glass p-3 mb-4">
-            <ul class="nav nav-pills gap-2" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link rounded-pill px-3 active" href="/tasks?tab=today">
-                        <i class="bi bi-list-task"></i> All
-                    </a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link rounded-pill px-3" href="/tasks?tab=today">
-                        <i class="bi bi-sun me-2"></i>Today
-                    </a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link rounded-pill px-3" href="/tasks?tab=overdue">
-                        <i class="bi bi-exclamation-triangle me-2"></i>Overdue
-                    </a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link rounded-pill px-3" href="/tasks?tab=upcoming">
-                        <i class="bi bi-calendar-week me-2"></i>Upcoming
-                    </a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link rounded-pill px-3" href="/tasks?tab=done">
-                        <i class="bi bi-check2-circle me-2"></i>Done
-                    </a>
-                </li>
-            </ul>
+            <form action="{{ route('tasks.index') }}" method="get">
+                <ul class="nav nav-pills gap-2" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button name="tab" value="all"
+                            class="nav-link rounded-pill px-3  {{ request('tab') == 'all' || request('tab') == null ? 'active' : '' }}">
+                            <i class="bi bi-list-task"></i> All
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button name="tab" value="today"
+                            class="nav-link rounded-pill px-3 {{ request('tab') == 'today' ? 'active' : '' }}">
+                            <i class="bi bi-sun me-2"></i>Today
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button name="tab" value="overdue"
+                            class="nav-link rounded-pill px-3 {{ request('tab') == 'overdue' ? 'active' : '' }}">
+                            <i class="bi bi-exclamation-triangle me-2"></i>Overdue
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button name="tab" value="upcoming"
+                            class="nav-link rounded-pill px-3 {{ request('tab') == 'upcoming' ? 'active' : '' }}">
+                            <i class="bi bi-calendar-week me-2"></i>Upcoming
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button name="tab" value="done"
+                            class="nav-link rounded-pill px-3 {{ request('tab') == 'done' ? 'active' : '' }}">
+                            <i class="bi bi-check2-circle me-2"></i>Done
+                        </button>
+                    </li>
+                </ul>
+            </form>
         </div>
 
         <!-- Filters -->
         <div class="glass p-3 mb-4">
-            <form class="row g-2 align-items-end" method="GET" action="/tasks">
+            <form class="row g-2 align-items-end" method="GET" action="{{ route('tasks.index') }}">
                 <div class="col-md-4">
                     <label class="form-label text-muted-soft small">Search</label>
-                    <input type="text" class="form-control search-input" name="search"
+                    <input type="text" class="form-control search-input" value="{{ request('q') }}" name="q"
                         placeholder="Title or description">
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Status</label>
                     <select class="form-select search-input" name="status" style="background-color: rgba(255,255,255,.06)">
-                        <option value="">Any</option>
-                        <option value="open">Open</option>
-                        <option value="done">Done</option>
-                        <option value="canceled">Canceled</option>
+                        <option value="" class="text-black">Any</option>
+                        @foreach (\App\Enums\TaskStatusEnum::cases() as $status)
+                            <option class="text-black" {{ request('status') == $status->value ? 'selected' : '' }}
+                                value="{{ $status->value }}">{{ $status->label() }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -75,22 +83,14 @@
                     <label class="form-label text-muted-soft small">Priority</label>
                     <select class="form-select search-input" name="priority"
                         style="background-color: rgba(255,255,255,.06)">
-                        <option value="">Any</option>
-                        <option value="high">High</option>
-                        <option value="normal">Normal</option>
-                        <option value="low">Low</option>
+                        <option value="" class=text-black>Any</option>
+                        @foreach (\App\Enums\TaskPriorityEnum::cases() as $priority)
+                            <option {{ request('priority') == $priority->value ? 'selected' : '' }} class="text-black"
+                                value="{{ $priority->value }}">{{ $priority->label() }}</option>
+                        @endforeach
                     </select>
                 </div>
 
-                <div class="col-md-2">
-                    <label class="form-label text-muted-soft small">Context</label>
-                    <select class="form-select search-input" name="context" style="background-color: rgba(255,255,255,.06)">
-                        <option value="">All</option>
-                        <option value="client">Client</option>
-                        <option value="deal">Deal</option>
-                        <option value="none">No context</option>
-                    </select>
-                </div>
 
                 <div class="col-md-2 d-grid">
                     <button class="btn btn-soft">
@@ -116,7 +116,7 @@
                     </thead>
                     <tbody>
                         @foreach ($tasks as $task)
-                            <tr class="{{ $task->due_at < now() ? 'row-overdue' : '' }}">
+                            <tr class="{{ $task->due_at->format('m.d.Y') < now()->format('m.d.Y') ? 'row-overdue' : '' }}">
 
                                 <td>
                                     <div class="fw-semibold text-white">{{ $task->title }}</div>
@@ -125,7 +125,7 @@
                                 </td>
                                 <td class="text-nowrap">
                                     <span
-                                        class="badge  {{ $task->due_at < now() ? 'badge-outline-danger' : 'badge-outline-success' }} rounded-pill">{{ $task->due_at->format('d.m.Y') }}</span>
+                                        class="badge  {{ $task->due_at->format('m.d.Y') < now()->format('m.d.Y') ? 'badge-outline-danger' : 'badge-outline-success' }} rounded-pill">{{ $task->due_at->format('d.m.Y') }}</span>
                                 </td>
                                 <td><span
                                         class="badge {{ $task->priority->badgeClass() }} rounded-pill">{{ $task->priority->label() }}</span>

@@ -1,16 +1,21 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskIndexRequest;
 use App\Http\Requests\TaskRequest;
 use App\Models\Client;
 use App\Models\Deal;
 use App\Models\Task;
+use App\QueryFilters\TaskFilters;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(TaskIndexRequest $request)
     {
-        return view('tasks.index', ['tasks' => Task::with(['client', 'deal'])->paginate(10)->withQueryString()]);
+        $filters = $request->validated();
+        $tasks   = Task::query()->with('client', 'deal');
+        $tasks   = app(TaskFilters::class)->apply($tasks, $filters);
+        return view('tasks.index', ['tasks' => $tasks->paginate(10)->withQueryString()]);
     }
 
     public function create(Client $client, Deal $deal)
