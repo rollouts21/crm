@@ -26,6 +26,11 @@
             <ul class="nav nav-pills gap-2" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link rounded-pill px-3 active" href="/tasks?tab=today">
+                        <i class="bi bi-list-task"></i> All
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link rounded-pill px-3" href="/tasks?tab=today">
                         <i class="bi bi-sun me-2"></i>Today
                     </a>
                 </li>
@@ -164,10 +169,26 @@
 
             <!-- Pagination placeholder -->
             <div class="d-flex justify-content-between align-items-center p-3">
-                <div class="text-muted-soft small">Showing 1–3 of 28</div>
+                <div class="text-muted-soft small">
+                    Showing
+                    {{ $tasks->firstItem() ?? 0 }}–{{ $tasks->lastItem() ?? 0 }}
+                    of {{ $tasks->total() }}
+                </div>
+
                 <div class="d-flex gap-2">
-                    <button class="btn btn-soft btn-sm rounded-pill">Prev</button>
-                    <button class="btn btn-soft btn-sm rounded-pill">Next</button>
+                    {{-- Prev --}}
+                    @if ($tasks->onFirstPage())
+                        <span class="btn btn-soft btn-sm rounded-pill disabled">Prev</span>
+                    @else
+                        <a class="btn btn-soft btn-sm rounded-pill" href="{{ $tasks->previousPageUrl() }}">Prev</a>
+                    @endif
+
+                    {{-- Next --}}
+                    @if ($tasks->hasMorePages())
+                        <a class="btn btn-soft btn-sm rounded-pill" href="{{ $tasks->nextPageUrl() }}">Next</a>
+                    @else
+                        <span class="btn btn-soft btn-sm rounded-pill disabled">Next</span>
+                    @endif
                 </div>
             </div>
         </div>

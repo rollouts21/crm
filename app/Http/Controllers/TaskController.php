@@ -10,7 +10,7 @@ class TaskController extends Controller
 {
     public function index()
     {
-        return view('tasks.index', ['tasks' => Task::all()]);
+        return view('tasks.index', ['tasks' => Task::with(['client', 'deal'])->paginate(10)->withQueryString()]);
     }
 
     public function create(Client $client, Deal $deal)
