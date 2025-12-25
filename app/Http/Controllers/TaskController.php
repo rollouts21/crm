@@ -6,16 +6,17 @@ use App\Http\Requests\TaskRequest;
 use App\Models\Client;
 use App\Models\Deal;
 use App\Models\Task;
-use App\QueryFilters\TaskFilters;
+use App\Services\TaskService;
 
 class TaskController extends Controller
 {
+
+    public function __construct(protected TaskService $service)
+    {}
     public function index(TaskIndexRequest $request)
     {
         $filters = $request->validated();
-        $tasks   = Task::query()->with('client', 'deal');
-        $tasks   = app(TaskFilters::class)->apply($tasks, $filters);
-        return view('tasks.index', ['tasks' => $tasks->paginate(10)->withQueryString()]);
+        return view('tasks.index', ['tasks' => $this->service->getTasks($filters)]);
     }
 
     public function create(Client $client, Deal $deal)
@@ -27,12 +28,7 @@ class TaskController extends Controller
     {
         $data = $request->validated();
 
-        $clientId = $client->id;
-        $dealId   = $deal->id;
-        $ownerId  = auth()->user()->id;
-
-        Task::create([ ...$data, "client_id" => $clientId, 'deal_id' => $dealId, 'owner_id' => $ownerId]);
-
+        $this->service->createTask($data, $client, $deal);
         return redirect()->route('tasks.index');
     }
 
@@ -49,8 +45,7 @@ class TaskController extends Controller
     public function update(TaskRequest $request, Client $client, Deal $deal, Task $task)
     {
         $data = $request->validated();
-        $task->update($data);
-
+        $this->service->updateTask($data, $client, $deal, $task);
         return redirect()->route('tasks.index');
     }
 
