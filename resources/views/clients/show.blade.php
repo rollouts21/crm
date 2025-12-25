@@ -104,7 +104,7 @@
                                 <div class="d-flex align-items-start justify-content-between">
                                     <div>
                                         <div class="text-muted-soft small">Deals</div>
-                                        <div class="h4 text-white fw-semibold mb-0">3</div>
+                                        <div class="h4 text-white fw-semibold mb-0">{{ $client->deals->count() }}</div>
                                     </div>
                                     <div class="kpi-icon"><i class="bi bi-cash-stack text-white"></i></div>
                                 </div>
@@ -114,7 +114,8 @@
                                 <div class="d-flex align-items-start justify-content-between">
                                     <div>
                                         <div class="text-muted-soft small">Open tasks</div>
-                                        <div class="h4 text-white fw-semibold mb-0">2</div>
+                                        <div class="h4 text-white fw-semibold mb-0">
+                                            {{ $client->allTasks() }}</div>
                                     </div>
                                     <div class="kpi-icon"><i class="bi bi-check2-square text-white"></i></div>
                                 </div>
@@ -124,7 +125,8 @@
                                 <div class="d-flex align-items-start justify-content-between">
                                     <div>
                                         <div class="text-muted-soft small">Won (total)</div>
-                                        <div class="h4 text-white fw-semibold mb-0">€4,800</div>
+                                        <div class="h4 text-white fw-semibold mb-0">
+                                            {{ number_format($client->getWonTotal(), 0, ',', ' ') }} RUB</div>
                                     </div>
                                     <div class="kpi-icon"><i class="bi bi-trophy text-white"></i></div>
                                 </div>
@@ -141,33 +143,13 @@
                             <i class="bi bi-plus-lg me-1"></i>Add Deal
                         </a>
 
-                        {{-- <button class="btn btn-soft rounded-pill px-3" data-bs-toggle="collapse"
-                            data-bs-target="#addNoteCollapse">
-                            <i class="bi bi-journal-text me-1"></i>Add Note
-                        </button> --}}
+
                         <a href="/logs?entity=Client&entity_id=88" class="btn btn-soft rounded-pill px-3">
                             <i class="bi bi-activity me-1"></i>View Logs
                         </a>
                     </div>
 
-                    <!-- Add note collapse -->
-                    {{-- <div class="collapse mt-3" id="addNoteCollapse">
-                        <div class="glass p-3">
-                            <form>
-                                <label class="form-label text-muted-soft small">New note</label>
-                                <textarea class="form-control search-input" rows="3" placeholder="Write something..."></textarea>
-                                <div class="d-flex gap-2 mt-2">
-                                    <button class="btn btn-primary btn-sm rounded-pill px-3" type="button">
-                                        Save Note
-                                    </button>
-                                    <button class="btn btn-soft btn-sm rounded-pill px-3" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#addNoteCollapse">
-                                        Cancel
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div> --}}
+
 
                 </div>
             </div>
@@ -190,12 +172,7 @@
                         <i class="bi bi-check2-square me-2"></i>Tasks
                     </button>
                 </li>
-                {{-- <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-pill px-3" id="notes-tab" data-bs-toggle="pill"
-                        data-bs-target="#notes" type="button" role="tab">
-                        <i class="bi bi-journal-text me-2"></i>Notes
-                    </button>
-                </li> --}}
+
                 <li class="nav-item" role="presentation">
                     <button class="nav-link rounded-pill px-3" id="history-tab" data-bs-toggle="pill"
                         data-bs-target="#history" type="button" role="tab">
@@ -213,7 +190,8 @@
                             <div class="text-white fw-semibold">Deals</div>
                             <div class="text-muted-soft small">All deals related to this client</div>
                         </div>
-                        <a href="/clients/88/deals/create" class="btn btn-primary btn-sm rounded-pill px-3">
+                        <a href="{{ route('clients.deals.create', $client->id) }}"
+                            class="btn btn-primary btn-sm rounded-pill px-3">
                             <i class="bi bi-plus-lg me-1"></i>Add Deal
                         </a>
                     </div>
@@ -231,49 +209,29 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Website redesign</div>
-                                        <div class="text-muted-soft small">Deal #152</div>
-                                    </td>
-                                    <td class="text-nowrap">€2,500</td>
-                                    <td><span class="badge text-bg-primary rounded-pill">In progress</span></td>
-                                    <td class="text-nowrap">2026-01-10</td>
-                                    <td class="text-muted-soft">—</td>
-                                    <td class="text-end">
-                                        <a href="/deals/152" class="btn btn-sm btn-soft rounded-pill px-3">View</a>
-                                        <a href="/deals/152/edit"
-                                            class="btn btn-sm btn-outline-light rounded-pill px-3">Edit</a>
-                                    </td>
-                                </tr>
+                                @foreach ($client->deals as $deal)
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold text-white">{{ $deal->title }}</div>
+                                            <div class="text-muted-soft small">Deal #{{ $deal->id }}</div>
+                                        </td>
+                                        <td class="text-nowrap">{{ number_format($deal->amount, 0, ',', ' ') }} RUB</td>
+                                        <td><span
+                                                class="badge {{ $deal->status->badgeClass() }} rounded-pill">{{ $deal->status->label() }}</span>
+                                        </td>
+                                        <td class="text-nowrap">{{ $deal->expected_close_at->format('d.m.Y') }}</td>
+                                        <td class="{{ $deal->close_at == null ? 'text-muted-soft' : 'text-nowrap' }}">
+                                            {{ $deal->close_at != null ? $deal->closed_at->format('d.m.Y') : 'Not Closed' }}
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="{{ route('clients.deals.show', [$client->id, $deal->id]) }}"
+                                                class="btn btn-sm btn-soft rounded-pill px-3">View</a>
+                                            <a href="{{ route('clients.deals.edit', [$client->id, $deal->id]) }}"
+                                                class="btn btn-sm btn-outline-light rounded-pill px-3">Edit</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Landing page</div>
-                                        <div class="text-muted-soft small">Deal #131</div>
-                                    </td>
-                                    <td class="text-nowrap">€1,200</td>
-                                    <td><span class="badge text-bg-success rounded-pill">Won</span></td>
-                                    <td class="text-muted-soft">—</td>
-                                    <td class="text-nowrap">2025-12-12</td>
-                                    <td class="text-end">
-                                        <a href="/deals/131" class="btn btn-sm btn-soft rounded-pill px-3">View</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Ads setup</div>
-                                        <div class="text-muted-soft small">Deal #120</div>
-                                    </td>
-                                    <td class="text-nowrap">€1,100</td>
-                                    <td><span class="badge text-bg-danger rounded-pill">Lost</span></td>
-                                    <td class="text-muted-soft">—</td>
-                                    <td class="text-nowrap">2025-11-30</td>
-                                    <td class="text-end">
-                                        <a href="/deals/120" class="btn btn-sm btn-soft rounded-pill px-3">View</a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -286,7 +244,7 @@
                             <div class="text-white fw-semibold">Tasks</div>
                             <div class="text-muted-soft small">Reminders and follow-ups</div>
                         </div>
-                        <a href="/tasks/create?client_id=88" class="btn btn-soft btn-sm rounded-pill px-3">
+                        <a href="{{ route('deals.index') }}" class="btn btn-soft btn-sm rounded-pill px-3">
                             <i class="bi bi-plus-lg me-1"></i>Add Task
                         </a>
                     </div>
@@ -303,53 +261,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Call client</div>
-                                        <div class="text-muted-soft small">Follow-up after proposal</div>
-                                    </td>
-                                    <td class="text-nowrap">Today 12:00</td>
-                                    <td><span class="badge text-bg-danger rounded-pill">High</span></td>
-                                    <td><span class="badge text-bg-primary rounded-pill">Open</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-success rounded-pill px-3" type="button">
-                                            <i class="bi bi-check2 me-1"></i>Done
-                                        </button>
-                                        <a href="/tasks/403/edit"
-                                            class="btn btn-sm btn-outline-light rounded-pill px-3">Edit</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Send invoice</div>
-                                        <div class="text-muted-soft small">For landing page</div>
-                                    </td>
-                                    <td class="text-nowrap text-warning">Overdue</td>
-                                    <td><span class="badge text-bg-warning rounded-pill">Normal</span></td>
-                                    <td><span class="badge text-bg-primary rounded-pill">Open</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-success rounded-pill px-3" type="button">
-                                            <i class="bi bi-check2 me-1"></i>Done
-                                        </button>
-                                        <a href="/tasks/399/edit"
-                                            class="btn btn-sm btn-outline-light rounded-pill px-3">Edit</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Prepare contract</div>
-                                        <div class="text-muted-soft small">Website redesign</div>
-                                    </td>
-                                    <td class="text-nowrap">Tomorrow 10:00</td>
-                                    <td><span class="badge text-bg-secondary rounded-pill">Low</span></td>
-                                    <td><span class="badge text-bg-secondary rounded-pill">Done</span></td>
-                                    <td class="text-end">
-                                        <a href="/tasks/377/edit"
-                                            class="btn btn-sm btn-outline-light rounded-pill px-3">View</a>
-                                    </td>
-                                </tr>
+                                @foreach ($client->deals as $deal)
+                                    @foreach ($deal->tasks as $task)
+                                        <tr>
+                                            <td>
+                                                <div class="fw-semibold text-white">{{ $task->title }}</div>
+                                                <div class="text-muted-soft small">{{ $task->description }}</div>
+                                            </td>
+                                            <td class="text-nowrap">{{ $task->due_at->format('d.m.Y') }}</td>
+                                            <td><span
+                                                    class="badge {{ $task->priority->badgeClass() }} rounded-pill">{{ $task->priority->label() }}</span>
+                                            </td>
+                                            <td><span
+                                                    class="badge {{ $task->status->badgeClass() }} rounded-pill">{{ $task->status->label() }}</span>
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="{{ route('clients.deals.tasks.edit', [$client->id, $deal->id, $task->id]) }}"
+                                                    class="btn btn-sm btn-outline-light rounded-pill px-3">Edit</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

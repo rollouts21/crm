@@ -4,57 +4,57 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClientIndexRequest;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
-use App\Models\Source;
-use App\QueryFilters\ClientFilters;
+use App\Services\ClientService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class ClientController extends Controller
 {
+    public function __construct(protected ClientService $service)
+    {
+
+    }
     public function index(ClientIndexRequest $request): View
     {
         $filters = $request->validated();
-        $clients = Client::query()->with('owner');
-        $clients = app(ClientFilters::class)->apply($clients, $filters);
-        return view('clients.index', ['clients' => $clients->paginate(15)->withQueryString(), 'sources' => Source::all()]);
+        return view('clients.index', ['clients' => $this->service->getClients($filters), 'sources' => $this->service->getSources()]);
     }
 
     public function create(): View
     {
-        return view('clients.create', ['sources' => Source::all()]);
+        return view('clients.create', ['sources' => $this->service->getSources()]);
     }
 
-    public function store(ClientRequest $request)
+    public function store(ClientRequest $request): RedirectResponse
     {
-        $data             = $request->validated();
-        $data['owner_id'] = auth()->user()->id;
-
-        Client::create([ ...$data, 'owner_id' => auth()->user()->id]);
+        $data = $request->validated();
+        $this->service->createClient($data);
 
         return redirect()->route('clients.index');
     }
 
     public function show(Client $client)
     {
-        return view('clients.show', ['client' => $client, 'sources' => Source::all()]);
+
+        return view('clients.show', ['client' => $this->service->loadRelationShipsToClient($client), 'sources' => $this->service->getSources()]);
     }
 
     public function edit(Client $client)
     {
-        return view('clients.edit', ['client' => $client, 'sources' => Source::all()]);
+        return view('clients.edit', ['client' => $client, 'sources' => $this->service->getSources()]);
     }
 
-    public function update(ClientRequest $request, Client $client)
+    public function update(ClientRequest $request, Client $client): RedirectResponse
     {
         $data = $request->validated();
-        $client->update($data);
-        // $client->update(['last_contact_at' => now()]);
+        $this->service->updateClient($data, $client);
 
         return redirect()->route('clients.index');
     }
 
-    public function destroy(Client $client)
+    public function destroy(Client $client): RedirectResponse
     {
-        $client->delete();
+        $this->service->destroyClient($client);
         return redirect()->route('clients.index');
     }
 }
