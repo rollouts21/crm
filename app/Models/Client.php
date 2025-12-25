@@ -31,4 +31,9 @@ class Client extends Model
     {
         return $this->belongsTo(Source::class);
     }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }

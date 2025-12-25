@@ -140,9 +140,7 @@
                             class="btn btn-primary rounded-pill px-3">
                             <i class="bi bi-plus-lg me-1"></i>Add Deal
                         </a>
-                        <a href="/tasks/create?client_id=88" class="btn btn-soft rounded-pill px-3">
-                            <i class="bi bi-plus-lg me-1"></i>Add Task
-                        </a>
+
                         {{-- <button class="btn btn-soft rounded-pill px-3" data-bs-toggle="collapse"
                             data-bs-target="#addNoteCollapse">
                             <i class="bi bi-journal-text me-1"></i>Add Note

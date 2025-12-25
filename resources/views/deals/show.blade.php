@@ -92,7 +92,8 @@
                             </div>
 
 
-                            <a href="/tasks/create?deal_id=152" class="btn btn-primary rounded-pill px-3">
+                            <a href="{{ route('clients.deals.tasks.create', [$client->id, $deal->id]) }}"
+                                class="btn btn-primary rounded-pill px-3">
                                 <i class="bi bi-plus-lg me-1"></i>Add Task
                             </a>
 
