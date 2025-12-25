@@ -180,12 +180,12 @@
                                 href="{{ route('clients.index') }}"><i class="bi bi-people me-2"></i>Clients</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs(['*.deals.*', 'deals.*']) ? 'active' : '' }} px-3"
+                            <a class="nav-link {{ request()->routeIs(['*.deals.create', '*.deals.show', '*.deals.edit', 'deals.index']) ? 'active' : '' }} px-3"
                                 href="{{ route('deals.index') }}"><i class="bi bi-cash-stack me-2"></i>Deals</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('tasks.*') ? 'active' : '' }} px-3"
-                                href="/tasks"><i class="bi bi-check2-square me-2"></i>Tasks</a>
+                            <a class="nav-link {{ request()->routeIs(['*.tasks.*', 'tasks.*']) ? 'active' : '' }} px-3"
+                                href="{{ route('tasks.index') }}"><i class="bi bi-check2-square me-2"></i>Tasks</a>
                         </li>
 
                         @can('view', auth()->user())

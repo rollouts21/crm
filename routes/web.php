@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DealsController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
@@ -27,9 +28,18 @@ Route::middleware('auth')->group(function () {
             Route::get('/{deal}/edit', [DealsController::class, 'edit'])->name('edit');
             Route::patch('/{deal}', [DealsController::class, 'update'])->name('update');
             Route::delete('/{deal}', [DealsController::class, 'destroy'])->name('destroy');
+            Route::name('tasks.')->prefix('{deal}/tasks')->group(function () {
+                Route::get('/create', [TaskController::class, 'create'])->name('create');
+                Route::post('/store', [TaskController::class, 'store'])->name('store');
+                Route::get('/{task}', [TaskController::class, 'show'])->name('show');
+                Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('edit');
+                Route::patch('/{task}', [TaskController::class, 'update'])->name('update');
+                Route::delete('/{task}', [TaskController::class, 'destroy'])->name('destroy');
+            });
         });
     });
     Route::get('/deals', [DealsController::class, 'index'])->name('deals.index');
+    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
 
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
