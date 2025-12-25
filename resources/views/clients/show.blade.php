@@ -221,7 +221,7 @@
                                         </td>
                                         <td class="text-nowrap">{{ $deal->expected_close_at->format('d.m.Y') }}</td>
                                         <td class="{{ $deal->close_at == null ? 'text-muted-soft' : 'text-nowrap' }}">
-                                            {{ $deal->close_at != null ? $deal->closed_at->format('d.m.Y') : 'Not Closed' }}
+                                            {{ $deal->closed_at != null ? $deal->closed_at->format('d.m.Y') : 'Not Closed' }}
                                         </td>
                                         <td class="text-end">
                                             <a href="{{ route('clients.deals.show', [$client->id, $deal->id]) }}"

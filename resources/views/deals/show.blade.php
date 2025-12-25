@@ -28,16 +28,6 @@
                     class="btn btn-soft rounded-pill px-3">
                     <i class="bi bi-pencil me-1"></i>Edit
                 </a>
-
-                {{-- <button class="btn btn-outline-success rounded-pill px-3" data-bs-toggle="modal"
-                    data-bs-target="#markWonModal">
-                    <i class="bi bi-trophy me-1"></i>Mark Won
-                </button>
-
-                <button class="btn btn-outline-danger rounded-pill px-3" data-bs-toggle="modal"
-                    data-bs-target="#markLostModal">
-                    <i class="bi bi-x-circle me-1"></i>Mark Lost
-                </button> --}}
             </div>
         </div>
 
@@ -85,7 +75,7 @@
                                 <div class="d-flex align-items-start justify-content-between">
                                     <div>
                                         <div class="text-muted-soft small">Open tasks</div>
-                                        <div class="h4 text-white fw-semibold mb-0">2</div>
+                                        <div class="h4 text-white fw-semibold mb-0">{{ $client->allTasks() }}</div>
                                     </div>
                                     <div class="kpi-icon"><i class="bi bi-check2-square text-white"></i></div>
                                 </div>
@@ -96,30 +86,8 @@
                                 class="btn btn-primary rounded-pill px-3">
                                 <i class="bi bi-plus-lg me-1"></i>Add Task
                             </a>
-
-                            <button class="btn btn-soft rounded-pill px-3" data-bs-toggle="collapse"
-                                data-bs-target="#dealAddNote">
-                                <i class="bi bi-plus-lg me-1"></i>Add Note
-                            </button>
                         </div>
                     </div>
-
-                    <!-- Add note collapse -->
-                    <div class="collapse mt-3" id="dealAddNote">
-                        <div class="glass p-3">
-                            <form method="POST" action="/deals/152/notes">
-                                <!-- @csrf -->
-                                <label class="form-label text-muted-soft small">New note</label>
-                                <textarea class="form-control search-input" rows="3" name="body" placeholder="Write something..."></textarea>
-                                <div class="d-flex gap-2 mt-2">
-                                    <button class="btn btn-primary btn-sm rounded-pill px-3" type="submit">Save</button>
-                                    <button class="btn btn-soft btn-sm rounded-pill px-3" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#dealAddNote">Cancel</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
@@ -143,21 +111,8 @@
                         </div>
                     </div>
 
-                    <hr class="my-4" style="border-color: rgba(255,255,255,.08);">
 
-                    <div class="text-muted-soft small mb-2">Quick actions</div>
-                    <div class="d-grid gap-2">
-                        <a href="/tasks?deal_id=152" class="btn btn-soft rounded-pill text-start px-3">
-                            <i class="bi bi-check2-square me-2"></i>View tasks
-                            <div class="text-muted-soft small ms-4">Filter tasks by this deal</div>
-                        </a>
-                        @can('view', auth()->user())
-                            <a href="/logs?entity=Deal&entity_id=152" class="btn btn-soft rounded-pill text-start px-3">
-                                <i class="bi bi-activity me-2"></i>Open audit log
-                                <div class="text-muted-soft small ms-4">All changes and status updates</div>
-                            </a>
-                        @endcan
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -171,12 +126,14 @@
                         <i class="bi bi-check2-square me-2"></i>Tasks
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-pill px-3" id="dealHistoryTab" data-bs-toggle="pill"
-                        data-bs-target="#dealHistory" type="button" role="tab">
-                        <i class="bi bi-activity me-2"></i>History
-                    </button>
-                </li>
+                @can('view', auth()->user())
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill px-3" id="dealHistoryTab" data-bs-toggle="pill"
+                            data-bs-target="#dealHistory" type="button" role="tab">
+                            <i class="bi bi-activity me-2"></i>History
+                        </button>
+                    </li>
+                @endcan
             </ul>
 
             <div class="tab-content pt-3">
@@ -187,7 +144,8 @@
                             <div class="text-white fw-semibold">Tasks</div>
                             <div class="text-muted-soft small">Follow-ups related to this deal</div>
                         </div>
-                        <a href="/tasks/create?deal_id=152" class="btn btn-primary btn-sm rounded-pill px-3">
+                        <a href="{{ route('clients.deals.tasks.create', [$client->id, $deal->id]) }}"
+                            class="btn btn-primary btn-sm rounded-pill px-3">
                             <i class="bi bi-plus-lg me-1"></i>Add Task
                         </a>
                     </div>
@@ -204,39 +162,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Clarify scope</div>
-                                        <div class="text-muted-soft small">Ask about pages + integrations</div>
-                                    </td>
-                                    <td class="text-nowrap">Today 12:00</td>
-                                    <td><span class="badge text-bg-danger rounded-pill">High</span></td>
-                                    <td><span class="badge text-bg-primary rounded-pill">Open</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-success rounded-pill px-3" type="button">
-                                            <i class="bi bi-check2 me-1"></i>Done
-                                        </button>
-                                        <a href="/tasks/403/edit"
-                                            class="btn btn-sm btn-outline-light rounded-pill px-3">Edit</a>
-                                    </td>
-                                </tr>
+                                @foreach ($deal->tasks as $task)
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold text-white">{{ $task->title }}</div>
+                                            <div class="text-muted-soft small">{{ $task->description }}</div>
+                                        </td>
+                                        <td class="text-nowrap">{{ $task->due_at->format('d.m.Y') }}</td>
+                                        <td><span
+                                                class="badge {{ $task->priority->badgeClass() }} rounded-pill">{{ $task->priority->label() }}</span>
+                                        </td>
+                                        <td><span
+                                                class="badge {{ $task->status->badgeClass() }} rounded-pill">{{ $task->status->label() }}</span>
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="{{ route('clients.deals.tasks.edit', [$client->id, $deal->id, $task->id]) }}"
+                                                class="btn btn-sm btn-outline-light rounded-pill px-3">Edit</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Send proposal</div>
-                                        <div class="text-muted-soft small">PDF with 2 variants</div>
-                                    </td>
-                                    <td class="text-nowrap">Tomorrow 10:00</td>
-                                    <td><span class="badge text-bg-warning rounded-pill">Normal</span></td>
-                                    <td><span class="badge text-bg-primary rounded-pill">Open</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-success rounded-pill px-3" type="button">
-                                            <i class="bi bi-check2 me-1"></i>Done
-                                        </button>
-                                        <a href="/tasks/402/edit"
-                                            class="btn btn-sm btn-outline-light rounded-pill px-3">Edit</a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>

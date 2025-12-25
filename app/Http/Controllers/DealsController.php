@@ -1,21 +1,23 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Enums\DealsStatusEnum;
 use App\Http\Requests\DealIndexRequest;
 use App\Http\Requests\DealsRequest;
 use App\Models\Client;
 use App\Models\Deal;
-use App\QueryFilters\DealFilters;
+use App\Services\ClientService;
+use App\Services\DealService;
 
 class DealsController extends Controller
 {
+    public function __construct(protected DealService $service)
+    {
+
+    }
     public function index(DealIndexRequest $request)
     {
         $filters = $request->validated();
-        $deals   = Deal::query()->with('client', 'owner');
-        $deals   = app(DealFilters::class)->apply($deals, $filters);
-        return view('deals.index', ['deals' => $deals->paginate(10)->withQueryString()]);
+        return view('deals.index', ['deals' => $this->service->getDeals($filters)]);
     }
 
     public function create(Client $client)
@@ -26,14 +28,15 @@ class DealsController extends Controller
     public function store(Client $client, DealsRequest $request)
     {
         $data = $request->validated();
-        Deal::create([ ...$data, 'owner_id' => auth()->user()->id, 'client_id' => $client->id]);
-
+        $this->service->createDeal($data, $client);
         return redirect()->route('deals.index');
     }
 
     public function show(Client $client, Deal $deal)
     {
-        return view('deals.show', ['client' => $client, 'deal' => $deal]);
+        $service = new ClientService();
+        $client  = $service->loadRelationShipsToClient($client);
+        return view('deals.show', ['client' => $client, 'deal' => $this->service->loadRelationShipsToDeal($deal)]);
     }
 
     public function edit(Client $client, Deal $deal)
@@ -44,12 +47,7 @@ class DealsController extends Controller
     public function update(Client $client, Deal $deal, DealsRequest $request)
     {
         $data = $request->validated();
-        if (isset($data['status'])) {
-            if ($data['status'] == DealsStatusEnum::Won->value || $data['status'] == DealsStatusEnum::Lost->value) {
-                $deal->update(['closed_at' => now()]);
-            }
-        }
-        $deal->update($data);
+        $this->service->updateDeal($data, $client, $deal);
 
         return redirect()->route('deals.index');
     }
