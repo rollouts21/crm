@@ -156,7 +156,7 @@
         <!-- Header / Navbar -->
         <nav class="navbar navbar-expand-lg nav-glass sticky-top">
             <div class="container-fluid px-3 px-lg-4">
-                <a class="navbar-brand d-flex align-items-center gap-2" href="/dashboard">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('index') }}">
                     <span class="brand-badge">
                         <i class="bi bi-grid-1x2-fill text-white"></i>
                     </span>
