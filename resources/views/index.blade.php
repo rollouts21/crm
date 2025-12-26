@@ -9,7 +9,6 @@
         <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-2">
-                    <span class="chip"><i class="bi bi-calendar3 me-2"></i>Today</span>
                     <span class="chip"><i class="bi bi-shield-lock me-2"></i>Role: {{ auth()->user()->getRole() }}</span>
                 </div>
                 <h1 class="h3 text-white mb-1 page-title">Dashboard</h1>
@@ -21,10 +20,10 @@
             </div>
 
             <div class="d-flex gap-2">
-                <a class="btn btn-soft rounded-pill px-3" href="/deals">
+                <a class="btn btn-soft rounded-pill px-3" href="{{ route('deals.index') }}">
                     <i class="bi bi-arrow-right-circle me-1"></i>Go to Deals
                 </a>
-                <a class="btn btn-primary rounded-pill px-3" href="/clients/create">
+                <a class="btn btn-primary rounded-pill px-3" href="{{ route('clients.create') }}">
                     <i class="bi bi-plus-lg me-1"></i>Create Client
                 </a>
             </div>
@@ -37,9 +36,7 @@
                     <div class="d-flex align-items-start justify-content-between">
                         <div>
                             <div class="text-muted-soft small">Total Clients</div>
-                            <div class="h2 text-white fw-semibold mb-0">124</div>
-                            <div class="text-muted-soft small mt-1"><i class="bi bi-arrow-up-short"></i> +8 this
-                                week</div>
+                            <div class="h2 text-white fw-semibold mb-0">{{ $totalClient }}</div>
                         </div>
                         <div class="kpi-icon">
                             <i class="bi bi-people text-white fs-5"></i>
@@ -52,9 +49,8 @@
                 <div class="kpi-card p-3 h-100">
                     <div class="d-flex align-items-start justify-content-between">
                         <div>
-                            <div class="text-muted-soft small">New (7 days)</div>
-                            <div class="h2 text-white fw-semibold mb-0">18</div>
-                            <div class="text-muted-soft small mt-1">from 3 sources</div>
+                            <div class="text-muted-soft small">New</div>
+                            <div class="h2 text-white fw-semibold mb-0">{{ $totalNewClients }}</div>
                         </div>
                         <div class="kpi-icon">
                             <i class="bi bi-person-plus text-white fs-5"></i>
@@ -68,8 +64,7 @@
                     <div class="d-flex align-items-start justify-content-between">
                         <div>
                             <div class="text-muted-soft small">Open Deals</div>
-                            <div class="h2 text-white fw-semibold mb-0">32</div>
-                            <div class="text-muted-soft small mt-1">in progress</div>
+                            <div class="h2 text-white fw-semibold mb-0">{{ $openDeals }}</div>
                         </div>
                         <div class="kpi-icon">
                             <i class="bi bi-cash-stack text-white fs-5"></i>
@@ -82,9 +77,9 @@
                 <div class="kpi-card p-3 h-100">
                     <div class="d-flex align-items-start justify-content-between">
                         <div>
-                            <div class="text-muted-soft small">Won (30 days)</div>
-                            <div class="h2 text-white fw-semibold mb-0">€14,250</div>
-                            <div class="text-muted-soft small mt-1">+12% vs prev.</div>
+                            <div class="text-muted-soft small">Won</div>
+                            <div class="h2 text-white fw-semibold mb-0">{{ number_format($wonTotal, 0, ',', ' ') }} RUB
+                            </div>
                         </div>
                         <div class="kpi-icon">
                             <i class="bi bi-trophy text-white fs-5"></i>
@@ -101,12 +96,9 @@
                 <div class="glass p-3">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <div>
-                            <div class="text-white fw-semibold">My Tasks Today</div>
+                            <div class="text-white fw-semibold">Tasks Today</div>
                             <div class="text-muted-soft small">Focus on the most important items.</div>
                         </div>
-                        <a href="/tasks/create" class="btn btn-soft btn-sm rounded-pill px-3">
-                            <i class="bi bi-plus-lg me-1"></i>Add Task
-                        </a>
                     </div>
 
                     <div class="table-responsive">
@@ -116,58 +108,27 @@
                                     <th>Task</th>
                                     <th class="text-nowrap">Due</th>
                                     <th>Priority</th>
-                                    <th class="text-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Call client “Coffee House”</div>
-                                        <div class="text-muted-soft small">Client: Coffee House</div>
-                                    </td>
-                                    <td class="text-nowrap">12:00</td>
-                                    <td><span class="badge text-bg-danger rounded-pill">High</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-success rounded-pill px-3">
-                                            <i class="bi bi-check2 me-1"></i>Done
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Prepare offer</div>
-                                        <div class="text-muted-soft small">Deal: Website for Bakery</div>
-                                    </td>
-                                    <td class="text-nowrap">16:00</td>
-                                    <td><span class="badge text-bg-warning rounded-pill">Normal</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-success rounded-pill px-3">
-                                            <i class="bi bi-check2 me-1"></i>Done
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-white">Send invoice</div>
-                                        <div class="text-muted-soft small">Deal: Landing page</div>
-                                    </td>
-                                    <td class="text-nowrap">18:30</td>
-                                    <td><span class="badge text-bg-secondary rounded-pill">Low</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-outline-success rounded-pill px-3">
-                                            <i class="bi bi-check2 me-1"></i>Done
-                                        </button>
-                                    </td>
-                                </tr>
+                                @foreach ($tasksToday as $task)
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold text-white">{{ $task->title }}</div>
+                                            <div class="text-muted-soft small">Deal #{{ $task->deal->id }}</div>
+                                        </td>
+                                        <td class="text-nowrap">{{ $task->due_at }}</td>
+                                        <td><span
+                                                class="badge {{ $task->priority->badgeClass() }} rounded-pill">{{ $task->priority->label() }}</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mt-3">
-                        <div class="text-muted-soft small">
-                            <i class="bi bi-info-circle me-1"></i>Showing 3 of 7 tasks
-                        </div>
-                        <a class="btn btn-soft btn-sm rounded-pill px-3" href="/tasks">
+                        <a class="btn btn-soft btn-sm rounded-pill px-3" href="{{ route('tasks.index') }}">
                             View all <i class="bi bi-arrow-right ms-1"></i>
                         </a>
                     </div>
