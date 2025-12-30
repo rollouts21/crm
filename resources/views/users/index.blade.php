@@ -14,7 +14,7 @@
             </div>
 
             <div class="d-flex gap-2">
-                <a href="/users/create" class="btn btn-primary rounded-pill px-3">
+                <a href="{{ route('users.create') }}" class="btn btn-primary rounded-pill px-3">
                     <i class="bi bi-person-plus me-1"></i>Add user
                 </a>
             </div>
@@ -25,26 +25,22 @@
             <form class="row g-2 align-items-end" method="GET" action="/users">
                 <div class="col-md-4">
                     <label class="form-label text-muted-soft small">Search</label>
-                    <input type="text" name="search" class="form-control search-input" placeholder="Name or email">
+                    <input type="text" value="{{ request('q') }}" name="q" class="form-control search-input"
+                        placeholder="Name or email">
                 </div>
 
                 <div class="col-md-3">
                     <label class="form-label text-muted-soft small">Role</label>
-                    <select name="role" class="form-select search-input" style="background-color: rgba(255,255,255,.06)">
-                        <option value="">All</option>
-                        <option value="admin">Admin</option>
-                        <option value="manager">Manager</option>
+                    <select name="role_id" class="form-select search-input" style="background-color: rgba(255,255,255,.06)">
+                        <option value="" class="text-black">All</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->id }}" style="text-transform: capitalize"
+                                {{ request('role_id') == $role->id ? 'selected' : '' }} class="text-black">
+                                {{ $role->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
-                <div class="col-md-3">
-                    <label class="form-label text-muted-soft small">Status</label>
-                    <select name="status" class="form-select search-input" style="background-color: rgba(255,255,255,.06)">
-                        <option value="">Any</option>
-                        <option value="active">Active</option>
-                        <option value="disabled">Disabled</option>
-                    </select>
-                </div>
 
                 <div class="col-md-2 d-grid">
                     <button class="btn btn-soft">
@@ -62,128 +58,59 @@
                         <tr>
                             <th>User</th>
                             <th>Role</th>
-                            <th class="text-nowrap">Last login</th>
-                            <th>Status</th>
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="avatar-circle-sm">AD</div>
-                                    <div>
-                                        <div class="text-white fw-semibold">Admin</div>
-                                        <div class="text-muted-soft small">admin@example.com</div>
+                        @foreach ($users as $user)
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div>
+                                            <div class="text-white fw-semibold">{{ $user->name }}</div>
+                                            <div class="text-muted-soft small">{{ $user->email }}</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span
-                                    class="badge bg-transparent border border-warning-subtle text-warning-emphasis rounded-pill">
-                                    Admin
-                                </span>
-                            </td>
-                            <td class="text-muted-soft text-nowrap small">
-                                2025-12-24 23:41<br>
-                                <span class="text-success">Online</span>
-                            </td>
-                            <td>
-                                <span
-                                    class="badge bg-transparent border border-success-subtle text-success-emphasis rounded-pill">
-                                    Active
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <a href="/users/1/edit" class="btn btn-sm btn-soft rounded-pill px-3">
-                                    <i class="bi bi-pencil me-1"></i>Edit
-                                </a>
-                                <button class="btn btn-sm btn-outline-light rounded-pill px-3" type="button">
-                                    Impersonate
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="avatar-circle-sm">MS</div>
-                                    <div>
-                                        <div class="text-white fw-semibold">Manager Sales</div>
-                                        <div class="text-muted-soft small">manager@example.com</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span
-                                    class="badge bg-transparent border border-primary-subtle text-primary-emphasis rounded-pill">
-                                    Manager
-                                </span>
-                            </td>
-                            <td class="text-muted-soft text-nowrap small">
-                                2025-12-23 18:10<br>
-                                <span class="text-muted-soft">1 day ago</span>
-                            </td>
-                            <td>
-                                <span
-                                    class="badge bg-transparent border border-success-subtle text-success-emphasis rounded-pill">
-                                    Active
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <a href="/users/2/edit" class="btn btn-sm btn-soft rounded-pill px-3">
-                                    Edit
-                                </a>
-                                <button class="btn btn-sm btn-outline-danger rounded-pill px-3" type="button">
-                                    Disable
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="avatar-circle-sm">OB</div>
-                                    <div>
-                                        <div class="text-white fw-semibold">Old Manager</div>
-                                        <div class="text-muted-soft small">old.manager@example.com</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span
-                                    class="badge bg-transparent border border-primary-subtle text-primary-emphasis rounded-pill">
-                                    Manager
-                                </span>
-                            </td>
-                            <td class="text-muted-soft text-nowrap small">
-                                2025-10-01 09:00<br>
-                                <span class="text-muted-soft">2 months ago</span>
-                            </td>
-                            <td>
-                                <span
-                                    class="badge bg-transparent border border-secondary-subtle text-secondary-emphasis rounded-pill">
-                                    Disabled
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button class="btn btn-sm btn-soft rounded-pill px-3" type="button">
-                                    Enable
-                                </button>
-                            </td>
-                        </tr>
-
+                                </td>
+                                <td>
+                                    <span class="badge bg-transparent border rounded-pill">
+                                        {{ $user->getRole() }}
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <a href="{{ route('users.edit', $user->id) }}"
+                                        class="btn btn-sm btn-soft rounded-pill px-3">
+                                        <i class="bi bi-pencil me-1"></i>Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
 
             <!-- Pagination -->
             <div class="d-flex justify-content-between align-items-center p-3">
-                <div class="text-muted-soft small">Showing 1–3 of 12</div>
+                <div class="text-muted-soft small">
+                    Showing
+                    {{ $users->firstItem() ?? 0 }}–{{ $users->lastItem() ?? 0 }}
+                    of {{ $users->total() }}
+                </div>
+
                 <div class="d-flex gap-2">
-                    <button class="btn btn-soft btn-sm rounded-pill">Prev</button>
-                    <button class="btn btn-soft btn-sm rounded-pill">Next</button>
+                    {{-- Prev --}}
+                    @if ($users->onFirstPage())
+                        <span class="btn btn-soft btn-sm rounded-pill disabled">Prev</span>
+                    @else
+                        <a class="btn btn-soft btn-sm rounded-pill" href="{{ $users->previousPageUrl() }}">Prev</a>
+                    @endif
+
+                    {{-- Next --}}
+                    @if ($users->hasMorePages())
+                        <a class="btn btn-soft btn-sm rounded-pill" href="{{ $users->nextPageUrl() }}">Next</a>
+                    @else
+                        <span class="btn btn-soft btn-sm rounded-pill disabled">Next</span>
+                    @endif
                 </div>
             </div>
         </div>
