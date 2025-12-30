@@ -27,45 +27,45 @@
         <div class="glass p-3 mb-4">
             <form class="row g-2 align-items-end" method="GET" action="/logs">
 
-                <div class="col-md-3">
-                    <label class="form-label text-muted-soft small">Search</label>
-                    <input type="text" name="search" class="form-control search-input"
-                        placeholder="Actor, entity, IP, details">
-                </div>
-
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Entity</label>
                     <select name="entity_type" class="form-select search-input"
                         style="background-color: rgba(255,255,255,.06)">
-                        <option value="">All</option>
-                        <option value="Client">Client</option>
-                        <option value="Deal">Deal</option>
-                        <option value="Task">Task</option>
-                        <option value="Source">Source</option>
-                        <option value="User">User</option>
+                        <option class="text-black" value="">All</option>
+                        <option class="text-black" {{ request('entity_type' == 'Client' ? 'selected' : '') }}
+                            value="Client">Client</option>
+                        <option class="text-black" {{ request('entity_type') == 'Deal' ? 'selected' : '' }} value="Deal">
+                            Deal</option>
+                        <option class="text-black" {{ request('entity_type') == 'Task' ? 'selected' : '' }} value="Task">
+                            Task</option>
+                        <option class="text-black" {{ request('entity_type') == 'Source' ? 'selected' : '' }}
+                            value="Source">Source</option>
+                        <option class="text-black" {{ request('entity_type') == 'User' ? 'selected' : '' }} value="User">
+                            User</option>
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Action</label>
                     <select name="action" class="form-select search-input" style="background-color: rgba(255,255,255,.06)">
-                        <option value="">Any</option>
-                        <option value="created">Created</option>
-                        <option value="updated">Updated</option>
-                        <option value="deleted">Deleted</option>
-                        <option value="restored">Restored</option>
-                        <option value="status_changed">Status changed</option>
+                        <option class="text-black" value="">Any</option>
+                        <option value="create" class="text-black" {{ request('action') == 'create' ? 'selected' : '' }}>
+                            Create</option>
+                        <option value="update" class="text-black" {{ request('action') == 'update' ? 'selected' : '' }}>
+                            Update</option>
+                        <option value="delete" class="text-black" {{ request('action') == 'delete' ? 'selected' : '' }}>
+                            Delete</option>
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Date from</label>
-                    <input type="date" name="from" class="form-control search-input">
+                    <input type="date" value="{{ request('min') }}" name="min" class="form-control search-input">
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label text-muted-soft small">Date to</label>
-                    <input type="date" name="to" class="form-control search-input">
+                    <input type="date" name="max" value="{{ request('max') }}" class="form-control search-input">
                 </div>
 
                 <div class="col-md-1 d-grid">
@@ -139,10 +139,26 @@
 
             <!-- Pagination -->
             <div class="d-flex justify-content-between align-items-center p-3">
-                <div class="text-muted-soft small">Showing 1–3 of 128</div>
+                <div class="text-muted-soft small">
+                    Showing
+                    {{ $logs->firstItem() ?? 0 }}–{{ $logs->lastItem() ?? 0 }}
+                    of {{ $logs->total() }}
+                </div>
+
                 <div class="d-flex gap-2">
-                    <button class="btn btn-soft btn-sm rounded-pill">Prev</button>
-                    <button class="btn btn-soft btn-sm rounded-pill">Next</button>
+                    {{-- Prev --}}
+                    @if ($logs->onFirstPage())
+                        <span class="btn btn-soft btn-sm rounded-pill disabled">Prev</span>
+                    @else
+                        <a class="btn btn-soft btn-sm rounded-pill" href="{{ $logs->previousPageUrl() }}">Prev</a>
+                    @endif
+
+                    {{-- Next --}}
+                    @if ($logs->hasMorePages())
+                        <a class="btn btn-soft btn-sm rounded-pill" href="{{ $logs->nextPageUrl() }}">Next</a>
+                    @else
+                        <span class="btn btn-soft btn-sm rounded-pill disabled">Next</span>
+                    @endif
                 </div>
             </div>
         </div>
