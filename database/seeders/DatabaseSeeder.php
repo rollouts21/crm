@@ -3,6 +3,7 @@ namespace Database\Seeders;
 
 use App\Models\Client;
 use App\Models\Deal;
+use App\Models\Role;
 use App\Models\Source;
 use App\Models\Task;
 use App\Models\User;
@@ -18,7 +19,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        Role::factory()->create([
+            'name' => 'admin',
+        ]);
+        Role::factory()->create([
+            'name' => 'manager',
+        ]);
+        User::factory(10)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',
