@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DealsController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/deals', [DealsController::class, 'index'])->name('deals.index');
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+    Route::get('/logs/{log}', [LogController::class, 'show'])->name('logs.show');
 
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

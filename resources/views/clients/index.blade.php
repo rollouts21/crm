@@ -107,26 +107,20 @@
                                             class="badge {{ $client->status->badgeClass() }} rounded-pill">{{ $client->status->label() }}</span>
                                     </td>
                                     <td>{{ $client->source_id }}</td>
-                                    <td>3</td>
+                                    <td>{{ $client->deals->count() }}</td>
                                     <td class="text-nowrap">
                                         {{ $client->last_contact_at != null ? $client->last_contact_at->format('d.m.Y, h:m') : 'Not contacted' }}
                                     </td>
                                     <td>{{ $client->owner->name }}</td>
                                     <td class="text-end">
-                                        <form action="{{ route('clients.destroy', $client->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <a href="{{ route('clients.show', $client->id) }}"
-                                                class="btn btn-sm btn-soft rounded-pill px-3">
-                                                View
-                                            </a>
-                                            <a href="{{ route('clients.edit', $client->id) }}"
-                                                class="btn btn-sm btn-outline-light rounded-pill px-3">
-                                                Edit
-                                            </a>
-                                            <button type="submit"
-                                                class="btn btn-sm btn-danger rounded-pill px-3">Delete</button>
-                                        </form>
+                                        <a href="{{ route('clients.show', $client->id) }}"
+                                            class="btn btn-sm btn-soft rounded-pill px-3">
+                                            View
+                                        </a>
+                                        <a href="{{ route('clients.edit', $client->id) }}"
+                                            class="btn btn-sm btn-outline-light rounded-pill px-3">
+                                            Edit
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

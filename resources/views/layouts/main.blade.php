@@ -191,7 +191,7 @@
                         @can('view', auth()->user())
                             <li class="nav-item">
                                 <a class="nav-link px-3 {{ request()->routeIs('logs.*') ? 'active' : '' }}"
-                                    href="/logs"><i class="bi bi-activity me-2"></i>Logs</a>
+                                    href="{{ route('logs.index') }}"><i class="bi bi-activity me-2"></i>Logs</a>
                             </li>
                         @endcan
                     </ul>
@@ -254,7 +254,8 @@
                         <i class="bi bi-check2-square me-2"></i>Tasks
                     </a>
                     @can('view', auth()->user())
-                        <a class="list-group-item list-group-item-action bg-transparent text-white" href="/logs">
+                        <a class="list-group-item list-group-item-action bg-transparent text-white"
+                            href="{{ route('logs.index') }}">
                             <i class="bi bi-activity me-2"></i>Logs
                         </a>
                     @endcan
