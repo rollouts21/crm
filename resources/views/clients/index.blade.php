@@ -107,7 +107,7 @@
                                             class="badge {{ $client->status->badgeClass() }} rounded-pill">{{ $client->status->label() }}</span>
                                     </td>
                                     <td>{{ $client->source_id }}</td>
-                                    <td>3</td>
+                                    <td>{{ $client->deals->count() }}</td>
                                     <td class="text-nowrap">
                                         {{ $client->last_contact_at != null ? $client->last_contact_at->format('d.m.Y, h:m') : 'Not contacted' }}
                                     </td>
