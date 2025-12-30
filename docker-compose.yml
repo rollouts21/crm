@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    container_name: crm_app
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: crm_nginx
+    ports:
+      - "8876:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - app
