@@ -214,18 +214,22 @@
                                 @endauth
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow">
-                                <li><a class="dropdown-item" href="/profile"><i
-                                            class="bi bi-person me-2"></i>Profile</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <form action="{{ route('logout') }}" method="post">
-                                        @csrf
-                                        <button class="dropdown-item text-danger"><i
-                                                class="bi bi-box-arrow-right me-2"></i>Logout</button>
-                                    </form>
-                                </li>
+                                @auth
+
+                                    <li><a class="dropdown-item" href="{{ route('profile.index') }}"><i
+                                                class="bi bi-person me-2"></i>Profile</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('logout') }}" method="post">
+                                            @csrf
+                                            <button class="dropdown-item text-danger"><i
+                                                    class="bi bi-box-arrow-right me-2"></i>Logout</button>
+                                        </form>
+                                    </li>
+
+                                @endauth
                             </ul>
                         </div>
                     </div>
@@ -264,7 +268,7 @@
                 <div class="mt-4 d-grid gap-2">
 
                     <form action="{{ route('logout') }}" method="post"></form>
-                    <a href="/profile" class="btn btn-soft rounded-pill">
+                    <a href="{{ route('profile.index') }}" class="btn btn-soft rounded-pill">
                         <i class="bi bi-person me-1"></i>Profile
                     </a>
 
