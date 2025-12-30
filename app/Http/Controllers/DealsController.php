@@ -10,7 +10,7 @@ use App\Services\DealService;
 
 class DealsController extends Controller
 {
-    public function __construct(protected DealService $service)
+    public function __construct(protected DealService $service, protected ClientService $client)
     {
 
     }
@@ -32,10 +32,9 @@ class DealsController extends Controller
         return redirect()->route('deals.index');
     }
 
-    public function show(Client $client, Deal $deal)
+    public function show(Client $client, Deal $deal, )
     {
-        $service = new ClientService();
-        $client  = $service->loadRelationShipsToClient($client);
+        $client = $this->client->loadRelationShipsToClient($client);
         return view('deals.show', ['client' => $client, 'deal' => $this->service->loadRelationShipsToDeal($deal)]);
     }
 

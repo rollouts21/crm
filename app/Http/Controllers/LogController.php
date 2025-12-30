@@ -15,7 +15,7 @@ class LogController extends Controller
             'min'         => 'nullable',
             'max'         => 'nullable',
         ]);
-        $logs = Log::query();
+        $logs = Log::query()->with('actor');
         $logs = app(LogFilters::class)->apply($logs, $filters);
         return view('logs.index', ['logs' => $logs->paginate(10)->withQueryString()]);
     }
