@@ -82,8 +82,15 @@ php artisan serve
 
 ## 🔑 Демо
 
-Admin: admin@example.com / password\
-Manager: manager@example.com / password
+Заполнить фейк данными
+```bash
+php artisan migrate --seed
+```
+
+Создать админа
+```bash
+php artisan app:create-admin
+```
 
 ------------------------------------------------------------------------
 
@@ -104,4 +111,7 @@ php artisan test
 
 ## 🤝 Автор
 
-Добавь свои контакты здесь.
+**TG**: @rollouts21
+
+**E-mail**: s.tyaglov@akamai.uz
+
