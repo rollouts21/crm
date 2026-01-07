@@ -14,7 +14,7 @@ class ClientService
     {}
     public function getClients(array $filters): LengthAwarePaginator
     {
-        $clients = Client::query()->with('owner');
+        $clients = Client::query()->with('owner', 'deals');
         $clients = app(ClientFilters::class)->apply($clients, $filters);
 
         return $clients->paginate(10)->withQueryString();
