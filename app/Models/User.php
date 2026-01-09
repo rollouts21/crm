@@ -60,4 +60,11 @@ class User extends Authenticatable
         return 'Manager';
     }
 
+    public function isAdmin(): bool{
+        if ($this->role->id == 1) {
+            return true;
+        }
+        return false;
+    }
+
 }

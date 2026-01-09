@@ -145,51 +145,32 @@
                                 <div class="text-white fw-semibold">Recent Activity</div>
                                 <div class="text-muted-soft small">Last 10 events from audit log.</div>
                             </div>
-                            <a href="/logs" class="btn btn-soft btn-sm rounded-pill px-3">
+                            <a href="{{ route('logs.index') }}" class="btn btn-soft btn-sm rounded-pill px-3">
                                 <i class="bi bi-activity me-1"></i>Open Logs
                             </a>
                         </div>
 
                         <div class="list-group list-group-darkish">
-                            <div class="list-group-item px-0 py-3">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <div class="text-white">
-                                            Deal <span class="fw-semibold">Website for Bakery</span> marked as
-                                            <span class="badge text-bg-success rounded-pill">WON</span>
+                            @foreach ($logs as $log)
+                                <div class="list-group-item px-3 py-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="text-white">{{ $log->entity_type }} <span
+                                                    class="fw-semibold">{{ $log->action }}</span>
+                                            </div>
+                                            <div class="text-muted-soft small">{{ $log->entity_type }} #{{ $log->entity_id }}
+                                            </div>
                                         </div>
-                                        <div class="text-muted-soft small">by Admin • Deal #152</div>
+                                        <small
+                                            class="text-muted-soft text-nowrap">{{ $log->created_at->diffForHumans() }}</small>
                                     </div>
-                                    <small class="text-muted-soft text-nowrap">10m ago</small>
                                 </div>
-                            </div>
-
-                            <div class="list-group-item px-0 py-3">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <div class="text-white">New client <span class="fw-semibold">John Smith</span>
-                                            created</div>
-                                        <div class="text-muted-soft small">source: Instagram • Client #88</div>
-                                    </div>
-                                    <small class="text-muted-soft text-nowrap">1h ago</small>
-                                </div>
-                            </div>
-
-                            <div class="list-group-item px-0 py-3">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <div class="text-white">Task <span class="fw-semibold">Call supplier</span>
-                                            completed</div>
-                                        <div class="text-muted-soft small">Task #403</div>
-                                    </div>
-                                    <small class="text-muted-soft text-nowrap">Today</small>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
 
                         <div class="mt-3 text-muted-soft small">
                             Tip: keep activity and KPIs on dashboard; details live in <a
-                                class="text-decoration-underline text-white" href="/logs">Logs</a>.
+                                class="text-decoration-underline text-white" href="{{ route('logs.index') }}">Logs</a>.
                         </div>
                     </div>
                 </div>

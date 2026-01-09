@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Deal;
 use App\QueryFilters\DealFilters;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Gate;
 
 class DealService
 {
@@ -14,6 +15,9 @@ class DealService
     public function getDeals(array $filters): LengthAwarePaginator
     {
         $deals = Deal::query()->with('client', 'owner');
+        $deals = Deal::when(!auth()->user()->isAdmin(), function ($query) {
+            $query->where('owner_id', auth()->user()->id);
+        });
         $deals = app(DealFilters::class)->apply($deals, $filters);
 
         return $deals->paginate(10)->withQueryString();
@@ -68,6 +72,8 @@ class DealService
         // return $deal->load(['tasks', 'client' => function ($query) {
         //     $query->with('tasks');
         // }]);
+
+        Gate::authorize('view', $deal);
         return $deal->load(['tasks', 'owner', 'client']);
     }
 }

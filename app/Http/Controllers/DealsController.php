@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\Deal;
 use App\Services\ClientService;
 use App\Services\DealService;
+use Illuminate\Support\Facades\Gate;
 
 class DealsController extends Controller
 {

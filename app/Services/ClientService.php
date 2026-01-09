@@ -2,11 +2,11 @@
 namespace App\Services;
 
 use App\Models\Client;
-use App\Models\Log;
 use App\Models\Source;
 use App\QueryFilters\ClientFilters;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
 
 class ClientService
 {
@@ -15,6 +15,9 @@ class ClientService
     public function getClients(array $filters): LengthAwarePaginator
     {
         $clients = Client::query()->with('owner', 'deals');
+        $clients = Client::when(!auth()->user()->isAdmin(), function ($query) {
+            $query->where('owner_id', auth()->user()->id);
+        });
         $clients = app(ClientFilters::class)->apply($clients, $filters);
 
         return $clients->paginate(10)->withQueryString();
@@ -72,6 +75,8 @@ class ClientService
 
     public function loadRelationShipsToClient(Client $client): Client
     {
+        Gate::authorize('view', $client);
+
         return $client->load(['source', 'deals' => function ($query) {
             $query->with('tasks');
         }]);

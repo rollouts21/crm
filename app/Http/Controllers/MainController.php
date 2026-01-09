@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Enums\ClientStatusEnum;
 use App\Models\Client;
 use App\Models\Deal;
+use App\Models\Log;
 use App\Models\Task;
 
 class MainController extends Controller
@@ -15,6 +16,7 @@ class MainController extends Controller
         $openDeals       = Deal::count();
         $wonTotal        = Deal::all()->sum('amount');
         $tasksToday      = Task::whereDate('due_at', now())->get();
-        return view('index', ['totalClient' => $totalClient, 'totalNewClients' => $totalNewClients, 'openDeals' => $openDeals, 'wonTotal' => $wonTotal, 'tasksToday' => $tasksToday]);
+        $logs = Log::paginate(3);
+        return view('index', ['totalClient' => $totalClient, 'totalNewClients' => $totalNewClients, 'openDeals' => $openDeals, 'wonTotal' => $wonTotal, 'tasksToday' => $tasksToday, 'logs' => $logs]);
     }
 }
