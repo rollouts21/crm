@@ -173,12 +173,14 @@
                     </button>
                 </li>
 
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-pill px-3" id="history-tab" data-bs-toggle="pill"
-                        data-bs-target="#history" type="button" role="tab">
-                        <i class="bi bi-activity me-2"></i>History
-                    </button>
-                </li>
+                @can('view', auth()->user())
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-pill px-3" id="history-tab" data-bs-toggle="pill"
+                            data-bs-target="#history" type="button" role="tab">
+                            <i class="bi bi-activity me-2"></i>History
+                        </button>
+                    </li>
+                @endcan
             </ul>
 
             <div class="tab-content pt-3" id="clientTabsContent">
