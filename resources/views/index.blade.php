@@ -9,7 +9,8 @@
         <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
             <div>
                 <div class="d-flex align-items-center gap-2 mb-2">
-                    <span class="chip"><i class="bi bi-shield-lock me-2"></i>Role: {{ auth()->user()->getRole() }}</span>
+                    <span class="chip"><i
+                            class="bi bi-shield-lock me-2"></i>Role: {{ auth()->user()->getRole() }}</span>
                 </div>
                 <h1 class="h3 text-white mb-1 page-title">Dashboard</h1>
                 <div class="text-muted-soft">Overview of clients, deals, tasks and
@@ -104,25 +105,25 @@
                     <div class="table-responsive">
                         <table class="table table-darkish table-hover align-middle mb-0">
                             <thead>
-                                <tr>
-                                    <th>Task</th>
-                                    <th class="text-nowrap">Due</th>
-                                    <th>Priority</th>
-                                </tr>
+                            <tr>
+                                <th>Task</th>
+                                <th class="text-nowrap">Due</th>
+                                <th>Priority</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach ($tasksToday as $task)
-                                    <tr>
-                                        <td>
-                                            <div class="fw-semibold text-white">{{ $task->title }}</div>
-                                            <div class="text-muted-soft small">Deal #{{ $task->deal->id }}</div>
-                                        </td>
-                                        <td class="text-nowrap">{{ $task->due_at }}</td>
-                                        <td><span
-                                                class="badge {{ $task->priority->badgeClass() }} rounded-pill">{{ $task->priority->label() }}</span>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            @foreach ($tasksToday as $task)
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold text-white">{{ $task->title }}</div>
+                                        <div class="text-muted-soft small">Deal #{{ $task->deal->id }}</div>
+                                    </td>
+                                    <td class="text-nowrap">{{ $task->due_at }}</td>
+                                    <td><span
+                                            class="badge {{ $task->priority->badgeClass() }} rounded-pill">{{ $task->priority->label() }}</span>
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -158,7 +159,8 @@
                                             <div class="text-white">{{ $log->entity_type }} <span
                                                     class="fw-semibold">{{ $log->action }}</span>
                                             </div>
-                                            <div class="text-muted-soft small">{{ $log->entity_type }} #{{ $log->entity_id }}
+                                            <div class="text-muted-soft small">{{ $log->entity_type }}
+                                                #{{ $log->entity_id }}
                                             </div>
                                         </div>
                                         <small

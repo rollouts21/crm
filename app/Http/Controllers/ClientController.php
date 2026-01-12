@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientIndexRequest;
@@ -14,6 +15,7 @@ class ClientController extends Controller
     {
 
     }
+
     public function index(ClientIndexRequest $request): View
     {
         $filters = $request->validated();
