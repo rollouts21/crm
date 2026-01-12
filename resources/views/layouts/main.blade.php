@@ -197,6 +197,10 @@
                                 <a class="nav-link px-3 {{ request()->routeIs('users.*') ? 'active' : '' }}"
                                     href="{{ route('users.index') }}"><i class="bi bi-person-vcard me-2"></i>Users</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link px-3 {{ request()->routeIs('source.*') ? 'active' : '' }}"
+                                    href="{{ route('source.index') }}"><i class="bi bi-database me-2"></i>Sources</a>
+                            </li>
                         @endcan
                     </ul>
 

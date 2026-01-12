@@ -5,6 +5,7 @@ use App\Http\Controllers\DealsController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SourceController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +55,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
-
+    Route::get('/sources', [SourceController::class, 'index'])->name('source.index');
+    Route::get('/sources/create', [SourceController::class, 'create'])->name('source.create');
+    Route::post('/sources/store', [SourceController::class, 'store'])->name('source.store');
+    Route::get('/sources/edit/{source}', [SourceController::class, 'edit'])->name('source.edit');
+    Route::patch('/sources/{source}', [SourceController::class, 'update'])->name('source.update');
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
